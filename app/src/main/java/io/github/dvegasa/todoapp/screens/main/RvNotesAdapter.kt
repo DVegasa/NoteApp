@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_note.view.*
 /**
  * 20.08.2019
  */
-class RvNotesAdapter(var list: ArrayList<Note>, val presenter: MainContract.Presenter) : RecyclerView.Adapter<RvNotesAdapter.VH>() {
+class RvNotesAdapter(var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAdapter.VH>() {
 
     class VH(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -28,7 +28,7 @@ class RvNotesAdapter(var list: ArrayList<Note>, val presenter: MainContract.Pres
             val note = list[position]
 
             setOnClickListener {
-                presenter.onNoteClicking(note)
+                // todo
             }
 
             tvBody.text = if (note.body.length < 50) {
@@ -36,6 +36,7 @@ class RvNotesAdapter(var list: ArrayList<Note>, val presenter: MainContract.Pres
             } else {
                 "${note.body.subSequence(0, 49)}..."
             }
+
             tvDate.text = "15 авг"
             tvHeader.text = note.title
             var tags = ""

@@ -2,13 +2,28 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme"
-           parent="Theme.AppCompat.Light.DarkActionBar">
+           parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:itemBackground">@color/colorWhite</item>
+        <item name="android:itemTextAppearance">@style/Toolbar.MenuTextStyle</item>
 
     </style>
+
+
+    <style name="Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="Toolbar.MenuTextStyle">
+        <item name="android:textColor">@color/colorForeground</item>
+    </style>
+
 
     <style name="SplashScreen"
            parent="Theme.AppCompat.NoActionBar">

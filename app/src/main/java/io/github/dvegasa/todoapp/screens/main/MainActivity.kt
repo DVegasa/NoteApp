@@ -2,31 +2,45 @@ package io.github.dvegasa.todoapp.screens.main
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import io.github.dvegasa.todoapp.R
 import io.github.dvegasa.todoapp.data_models.Note
+import io.github.dvegasa.todoapp.storage.FakeData
 import kotlinx.android.synthetic.main.activity_main.*
 
+class MainActivity : AppCompatActivity() {
 
-
-class MainActivity : AppCompatActivity(), MainContract.View {
-
-    private var presenter: MainContract.Presenter? = MainPresenter(this)
     private lateinit var adapter: RvNotesAdapter
+    private val storage = FakeData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(io.github.dvegasa.todoapp.R.style.AppTheme)
-        setContentView(io.github.dvegasa.todoapp.R.layout.activity_main)
+        setTheme(R.style.AppTheme)
+        setContentView(R.layout.activity_main)
+        initToolbar()
+        storage.getAllNotes (object : FakeData.Callback {
+            override fun onResult(list: ArrayList<Note>) {
+                initRvNotes(list)
+            }
+        })
+    }
 
-        presenter?.viewIsReady()
+    private fun initToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "Записи"
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_screen_menu, menu)
+        return true
     }
 
     private fun initRvNotes(notes: List<Note>) {
         Log.d("ed", "initRvNotes()")
-        adapter = RvNotesAdapter(notes as ArrayList<Note>, presenter!!)
+        adapter = RvNotesAdapter(notes as ArrayList<Note>)
         rvNotes.layoutManager = LinearLayoutManager(this)
         rvNotes.adapter = adapter
 
@@ -37,23 +51,4 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         rvNotes.addItemDecoration(dividerItemDecoration)
     }
 
-    override fun onDestroy() {
-        presenter?.onDestroy()
-        super.onDestroy()
-    }
-
-    override fun showNotes(notes: List<Note>) {
-        initRvNotes(notes)
-    }
-
-    override fun onNoteRemoved() {
-    }
-
-    override fun editNote(note: Note) {
-        Toast.makeText(this, "editNote", Toast.LENGTH_LONG).show()
-    }
-
-    override fun showError(error: String) {
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
-    }
 }
