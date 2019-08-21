@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="#work #программирование"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/TextCaption"
+            android:id="@+id/tvTags"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="15 авг"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/TextCaption"
+            android:id="@+id/tvDate"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+            android:id="@+id/llAttachments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@+id/tvDate"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintTop_toTopOf="@+id/tvDate"
+            app:layout_constraintBottom_toBottomOf="@+id/tvDate">
+
+        <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_attach_file_black_24dp"/>
+
+        <TextView
+                android:id="@+id/tvAttachmentsNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                style="@style/TextCaption"
+                tools:test="2"/>
+    </LinearLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Заголовок"
+            android:layout_marginTop="2dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvTags"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            style="@style/TextHeader"
+            android:id="@+id/tvHeader"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Этот текст написан с любовью и заботой..."
+            android:layout_marginTop="2dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            style="@style/TextNormal"
+            android:id="@+id/tvBody"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

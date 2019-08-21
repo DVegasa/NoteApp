@@ -3,10 +3,47 @@
     <!-- Base application theme. -->
     <style name="AppTheme"
            parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name="SplashScreen"
+           parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+
+    <style name="WhiteAccent"
+           parent="AppTheme">
+        <item name="colorAccent">@color/colorWhite</item>
+    </style>
+
+    <style name="BlueAccent"
+           parent="AppTheme">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+
+    <style name="TextNormal"
+           parent="AppTheme">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorTextNormal</item>
+    </style>
+
+    <style name="TextHeader"
+           parent="AppTheme">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorTextNormal</item>
+    </style>
+
+    <style name="TextCaption"
+           parent="AppTheme">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/colorTextCaption</item>
     </style>
 
 </resources>
