@@ -41,6 +41,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:textSize="16sp"
             tools:text="#work #cv"
+            android:hint="Теги (разделяйте символом #)"
             tools:visibility="visible"/>
 
     <EditText

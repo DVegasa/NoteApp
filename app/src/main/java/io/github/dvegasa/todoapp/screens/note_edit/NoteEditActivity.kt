@@ -108,6 +108,7 @@ class NoteEditActivity : AppCompatActivity() {
 
     private fun setTagsEnabled() {
         etTags.visibility = if (isTagsShown) View.VISIBLE else View.GONE
+
         if (isTagsShown) {
             val a = Toast.makeText(this, "Для разделения тегов используйте символ решётки #", Toast.LENGTH_SHORT)
             a.setGravity(Gravity.TOP, 0, 22)
