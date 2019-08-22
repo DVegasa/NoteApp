@@ -114,6 +114,22 @@ class NoteEditActivity : AppCompatActivity() {
 
             false
         }
+
+        val icon = when (note.attachments.size) {
+            0 -> R.drawable.ic_attach_file_toolbar_black_24dp
+            1 -> R.drawable.ic_attachment_number_1
+            2 -> R.drawable.ic_attachment_number_2
+            3 -> R.drawable.ic_attachment_number_3
+            4 -> R.drawable.ic_attachment_number_4
+            5 -> R.drawable.ic_attachment_number_5
+            6 -> R.drawable.ic_attachment_number_6
+            7 -> R.drawable.ic_attachment_number_7
+            8 -> R.drawable.ic_attachment_number_8
+            9 -> R.drawable.ic_attachment_number_9
+            else -> R.drawable.ic_attachment_number_9_plus
+        }
+
+        menu?.findItem(R.id.action_attachments)?.icon = ResourcesCompat.getDrawable(resources, icon, null)
         return true
     }
 

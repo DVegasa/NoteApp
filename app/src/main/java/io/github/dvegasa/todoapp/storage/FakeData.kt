@@ -20,7 +20,9 @@ class FakeData {
         Note("Фотографии кошек", "Мяу!", 2, arrayListOf("кошки", "фото", "кот"), 1565740800,
             listOf(FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""))),
         Note("Привет!", longText, 3, arrayListOf("хелло_мир", "hello_world"), 1564740800, emptyList()),
-        Note("Фотографии кошек и маленьких котят и щенят", "Мяу!", 4, arrayListOf("meow", "щенята"), 1563740800, listOf(FileInfo("", 0f, "", "", "")))
+        Note("Фотографии кошек и маленьких котят и щенят", "Мяу!", 4, arrayListOf("meow", "щенята"), 1563740800, listOf(FileInfo("", 0f, "", "", ""))),
+        Note("Фотографии кошек и маленьких котят и щенят", "Мяу!", 5, arrayListOf("meow", "щенята"), 1563740800,
+            listOf(FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", "")))
     )
 
     init {
@@ -30,9 +32,11 @@ class FakeData {
     }
 
     fun getNoteById(id: Long, c: Callback) {
-        c.onResult(list.filter {
+        val r = (list.filter {
             it.id == id
         } as ArrayList<Note>)
+        if (r.size > 1) throw Exception("Not unique IDs! Note.id: ${r[0]}")
+        c.onResult(r)
     }
 
     fun getAllNotes(c: Callback) {
