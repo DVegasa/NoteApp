@@ -1,11 +1,11 @@
 package io.github.dvegasa.todoapp.screens.main
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -13,9 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.github.dvegasa.todoapp.R
 import io.github.dvegasa.todoapp.data_models.Note
+import io.github.dvegasa.todoapp.screens.preferences.PREF_KEY_PREVIEW_LIMIT
+import io.github.dvegasa.todoapp.screens.preferences.SettingsActivity
 import io.github.dvegasa.todoapp.storage.FakeData
+import io.github.dvegasa.todoapp.storage.UserPreferences
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_sort.view.*
+import org.jetbrains.anko.startActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +29,15 @@ class MainActivity : AppCompatActivity() {
     private val dialog by lazy {
         BottomSheetDialog(this)
     }
+
+    private val userPref by lazy { UserPreferences(this) }
+
+    private val sharedPrefListener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+        when (key) {
+            PREF_KEY_PREVIEW_LIMIT -> adapter.notifyDataSetChanged()
+        }
+    }
+
 
     private val sortHandler = View.OnClickListener { view ->
         when (view.id) {
@@ -59,6 +72,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initToolbar()
         loadData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        userPref.sharedPref.registerOnSharedPreferenceChangeListener(sharedPrefListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        userPref.sharedPref.unregisterOnSharedPreferenceChangeListener(sharedPrefListener)
     }
 
     private fun initToolbar() {
@@ -143,7 +166,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showSettings() {
-        Toast.makeText(this, "Will be soon", Toast.LENGTH_LONG).show()
-        Log.d("ed", System.currentTimeMillis().toString())
+        startActivity<SettingsActivity>()
     }
 }

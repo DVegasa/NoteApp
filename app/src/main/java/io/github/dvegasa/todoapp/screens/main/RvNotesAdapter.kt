@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.dvegasa.todoapp.data_models.Note
 import io.github.dvegasa.todoapp.screens.note_edit.ARG_NOTE_ID
 import io.github.dvegasa.todoapp.screens.note_edit.NoteEditActivity
+import io.github.dvegasa.todoapp.storage.UserPreferences
 import kotlinx.android.synthetic.main.item_note.view.*
 import org.jetbrains.anko.startActivity
 import java.text.SimpleDateFormat
@@ -41,10 +42,11 @@ class RvNotesAdapter(var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAd
                 context.startActivity<NoteEditActivity>(ARG_NOTE_ID to note.id)
             }
 
-            tvBody.text = if (note.body.length < 50) {
+            val limit = UserPreferences(context).getPreviewBodySymbolsLimit()
+            tvBody.text = if (note.body.length < limit) {
                 note.body
             } else {
-                "${note.body.subSequence(0, 49)}..."
+                "${note.body.subSequence(0, limit)}..."
             }
 
             tvDate.text = parseTime(note.lastTimeModified)

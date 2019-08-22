@@ -28,7 +28,7 @@ class NoteEditActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(io.github.dvegasa.todoapp.R.layout.activity_note_edit)
+        setContentView(R.layout.activity_note_edit)
         val id = intent.extras?.getLong(ARG_NOTE_ID) ?: 0
         initToolbar()
         initViews()
@@ -73,19 +73,19 @@ class NoteEditActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(io.github.dvegasa.todoapp.R.menu.edit_note_screen_menu, menu)
-        menu?.findItem(io.github.dvegasa.todoapp.R.id.action_tags)?.setOnMenuItemClickListener {
+        menuInflater.inflate(R.menu.edit_note_screen_menu, menu)
+        menu?.findItem(R.id.action_tags)?.setOnMenuItemClickListener {
             isTagsShown = !isTagsShown
             if (isTagsShown) {
-                menu.findItem(io.github.dvegasa.todoapp.R.id.action_tags).icon =
+                menu.findItem(R.id.action_tags).icon =
                     ResourcesCompat.getDrawable(
                         resources,
-                        io.github.dvegasa.todoapp.R.drawable.ic_sharp_activated,
+                        R.drawable.ic_sharp_activated,
                         null
                     )
             } else {
-                menu.findItem(io.github.dvegasa.todoapp.R.id.action_tags).icon =
-                    ResourcesCompat.getDrawable(resources, io.github.dvegasa.todoapp.R.drawable.ic_sharp_normal, null)
+                menu.findItem(R.id.action_tags).icon =
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_sharp_normal, null)
             }
 
             setTagsEnabled()

@@ -11,6 +11,14 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity
+                android:name=".screens.preferences.SettingsActivity"
+                android:label="@string/title_activity_settings"
+                android:parentActivityName=".screens.main.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="io.github.dvegasa.todoapp.screens.main.MainActivity"/>
+        </activity>
         <activity android:name=".screens.note_edit.NoteEditActivity">
         </activity>
         <activity
