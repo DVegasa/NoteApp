@@ -13,19 +13,16 @@
 
     </style>
 
-    <style name="AppTheme.SearchingStyle">
-        <item name="colorPrimary">@color/colorBackground</item>
-        <item name="colorPrimaryDark">#D5D5D5</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">#000</item>
-    </style>
 
-    <style name="AppSearchViewStyle" parent="Widget.AppCompat.SearchView">
+    <style name="AppSearchViewStyle"
+           parent="Widget.AppCompat.SearchView">
         <item name="queryBackground">@color/colorBackground</item>
         <item name="android:textColor">#000</item>
         <item name="colorPrimary">@color/colorBackground</item>
-        <item name="colorPrimaryDark">#D5D5D5</item>
+        <item name="colorPrimaryDark">#E4E4E4</item>
     </style>
+
+
 
     <style name="AppBottomSheetDialogTheme"
            parent="Theme.Design.Light.BottomSheetDialog">
@@ -37,10 +34,13 @@
         <item name="android:background">@drawable/bg_dialog_sort</item>
     </style>
 
+
+
+
     <style name="Toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
-         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="android:background">@color/colorPrimary</item>
     </style>
 
@@ -49,10 +49,22 @@
     </style>
 
 
+    <style name="WhiteToolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="colorPrimary">@color/colorBackground</item>
+        <item name="colorPrimaryDark">#E4E4E4</item>
+    </style>
+
+
     <style name="SplashScreen"
            parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
+
+
 
 
     <style name="WhiteAccent"
@@ -64,6 +76,8 @@
            parent="AppTheme">
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
+
+
 
 
     <style name="TextNormal"

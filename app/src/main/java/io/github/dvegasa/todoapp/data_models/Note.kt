@@ -10,4 +10,13 @@ data class Note(
     var tags: List<String>,
     var lastTimeModified: Long,
     var attachments: List<FileInfo>
-)
+) {
+    @Suppress("LocalVariableName")
+    fun tagsToString(): String {
+        var tags_ = ""
+        this.tags.forEachIndexed { index, s ->
+            tags_ = "$tags_ #$s"
+        }
+        return tags_.trim()
+    }
+}

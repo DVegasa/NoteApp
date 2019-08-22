@@ -83,13 +83,11 @@ class MainActivity : AppCompatActivity() {
 
         searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-                setTheme(R.style.AppTheme_SearchingStyle)
                 Log.d("ed", "expand")
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                setTheme(R.style.AppTheme)
                 Log.d("ed", "Collapse")
                 return true
             }

@@ -8,7 +8,10 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import io.github.dvegasa.todoapp.data_models.Note
+import io.github.dvegasa.todoapp.screens.note_edit.ARG_NOTE_ID
+import io.github.dvegasa.todoapp.screens.note_edit.NoteEditActivity
 import kotlinx.android.synthetic.main.item_note.view.*
+import org.jetbrains.anko.startActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,7 +38,7 @@ class RvNotesAdapter(var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAd
             val note = list[position]
 
             setOnClickListener {
-                // todo
+                context.startActivity<NoteEditActivity>(ARG_NOTE_ID to note.id)
             }
 
             tvBody.text = if (note.body.length < 50) {
@@ -46,12 +49,8 @@ class RvNotesAdapter(var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAd
 
             tvDate.text = parseTime(note.lastTimeModified)
             tvHeader.text = note.title
-            var tags = ""
 
-            note.tags.forEachIndexed { index, s ->
-                tags = "$tags #$s"
-            }
-            tvTags.text = tags
+            tvTags.text = note.tagsToString()
 
             if (note.attachments.isEmpty()) {
                 llAttachments.visibility = View.INVISIBLE
