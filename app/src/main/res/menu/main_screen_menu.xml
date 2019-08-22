@@ -6,6 +6,7 @@
             android:id="@+id/action_search"
             app:showAsAction="always"
             android:icon="@drawable/ic_search_white_24dp"
+            app:actionViewClass="androidx.appcompat.widget.SearchView"
             android:title="Поиск"/>
 
     <item
@@ -15,7 +16,7 @@
             android:title="Сортировка"/>
 
     <item
-        android:id="@+id/action_settings"
-        app:showAsAction="never"
-        android:title="Настройки"/>
+            android:id="@+id/action_settings"
+            app:showAsAction="never"
+            android:title="Настройки"/>
 </menu>

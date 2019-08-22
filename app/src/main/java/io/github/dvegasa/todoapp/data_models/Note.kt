@@ -8,5 +8,6 @@ data class Note(
     var body: String,
     val id: Long,
     var tags: List<String>,
+    var lastTimeModified: Long,
     var attachments: List<FileInfo>
 )

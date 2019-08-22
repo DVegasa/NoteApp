@@ -9,9 +9,33 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:itemBackground">@color/colorWhite</item>
         <item name="android:itemTextAppearance">@style/Toolbar.MenuTextStyle</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
 
     </style>
 
+    <style name="AppTheme.SearchingStyle">
+        <item name="colorPrimary">@color/colorBackground</item>
+        <item name="colorPrimaryDark">#D5D5D5</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">#000</item>
+    </style>
+
+    <style name="AppSearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">@color/colorBackground</item>
+        <item name="android:textColor">#000</item>
+        <item name="colorPrimary">@color/colorBackground</item>
+        <item name="colorPrimaryDark">#D5D5D5</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme"
+           parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+           parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_dialog_sort</item>
+    </style>
 
     <style name="Toolbar">
         <item name="android:layout_width">match_parent</item>

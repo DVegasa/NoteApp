@@ -11,6 +11,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".screens.note_edit.NoteEditActivity">
+        </activity>
         <activity
                 android:name=".screens.main.MainActivity"
                 android:theme="@style/SplashScreen">

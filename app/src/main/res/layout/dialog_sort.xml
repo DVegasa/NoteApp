@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@drawable/bg_dialog_sort">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сортировка"
+            style="@style/TextHeader"
+            android:textSize="20sp"
+            android:layout_marginBottom="8dp"/>
+
+    <TextView
+            android:id="@+id/tvSortNewFirst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сначала новые"
+            style="@style/TextNormal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+    <TextView
+            android:id="@+id/tvSortOldFirst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сначала старые"
+            style="@style/TextNormal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+    <TextView
+            android:id="@+id/tvSortByTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="По заголовку"
+            style="@style/TextNormal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+</LinearLayout>
