@@ -15,6 +15,12 @@
             android:icon="@drawable/ic_sharp_normal" />
 
     <item
+            android:id="@+id/action_lock"
+            app:showAsAction="always"
+            android:title="Только чтение"
+            android:icon="@drawable/ic_lock_normal"/>
+
+    <item
             android:id="@+id/action_share"
             app:showAsAction="never"
             android:title="Поделиться" />

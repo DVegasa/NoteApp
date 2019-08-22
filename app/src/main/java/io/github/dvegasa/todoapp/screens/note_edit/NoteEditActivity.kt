@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -16,6 +17,7 @@ import io.github.dvegasa.todoapp.data_models.Note
 import io.github.dvegasa.todoapp.storage.FakeData
 import kotlinx.android.synthetic.main.activity_note_edit.*
 import org.jetbrains.anko.share
+import org.jetbrains.anko.toast
 
 
 const val ARG_NOTE_ID = "id"
@@ -25,6 +27,7 @@ class NoteEditActivity : AppCompatActivity() {
     private lateinit var note: Note
     private val storage = FakeData()
     private var isTagsShown: Boolean = false
+    private var isReadOnly: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,17 +81,36 @@ class NoteEditActivity : AppCompatActivity() {
             isTagsShown = !isTagsShown
             if (isTagsShown) {
                 menu.findItem(R.id.action_tags).icon =
-                    ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.ic_sharp_activated,
-                        null
-                    )
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_sharp_activated, null)
             } else {
                 menu.findItem(R.id.action_tags).icon =
                     ResourcesCompat.getDrawable(resources, R.drawable.ic_sharp_normal, null)
             }
 
             setTagsEnabled()
+
+            false
+        }
+
+        menu?.findItem(R.id.action_lock)?.setOnMenuItemClickListener {
+            isReadOnly = !isReadOnly
+            val edits = listOf<EditText>(etTitle, etTags, etBody)
+
+            edits.forEach {
+                it.isFocusable = !isReadOnly
+                it.isFocusableInTouchMode = !isReadOnly
+                it.clearFocus()
+            }
+
+            if (isReadOnly) {
+                menu.findItem(R.id.action_lock).icon =
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_activated, null)
+                toast("Только чтение")
+            } else {
+                menu.findItem(R.id.action_lock).icon =
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_normal, null)
+                toast("Можно редактировать")
+            }
 
             false
         }
