@@ -14,9 +14,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import io.github.dvegasa.todoapp.R
 import io.github.dvegasa.todoapp.data_models.Note
+import io.github.dvegasa.todoapp.screens.attachments.ARG_NOTE_ID
+import io.github.dvegasa.todoapp.screens.attachments.AttachmentsActivity
 import io.github.dvegasa.todoapp.storage.FakeData
 import kotlinx.android.synthetic.main.activity_note_edit.*
 import org.jetbrains.anko.share
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 
@@ -139,6 +142,9 @@ class NoteEditActivity : AppCompatActivity() {
             R.id.action_share -> {
                 val text = "${note.title}\n\n${note.body}\n\n${note.tagsToString()}"
                 share(text)
+            }
+            R.id.action_attachments -> {
+                startActivity<AttachmentsActivity>(ARG_NOTE_ID to note.id)
             }
         }
         return super.onOptionsItemSelected(item)

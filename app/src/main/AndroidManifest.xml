@@ -11,7 +11,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-
+        <activity android:name=".screens.attachments.AttachmentsActivity">
+        </activity>
         <activity
                 android:name=".screens.preferences.SettingsActivity"
                 android:label="@string/title_activity_settings"
@@ -20,12 +21,8 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="io.github.dvegasa.todoapp.screens.main.MainActivity"/>
         </activity>
-
-
         <activity android:name=".screens.note_edit.NoteEditActivity">
         </activity>
-
-
         <activity
                 android:name=".screens.main.MainActivity"
                 android:theme="@style/SplashScreen">
