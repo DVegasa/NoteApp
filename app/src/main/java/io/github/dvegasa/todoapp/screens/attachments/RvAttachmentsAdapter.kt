@@ -1,6 +1,7 @@
 package io.github.dvegasa.todoapp.screens.attachments
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,19 @@ class RvAttachmentsAdapter(var list: List<FileInfo>) : RecyclerView.Adapter<RvAt
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_attachment, parent, false)
+
+        view.ivRemove.setOnClickListener {
+            val dialog = AlertDialog.Builder(parent.context)
+                .setTitle("Удалить файл?")
+                .setPositiveButton("Удалить") { dialog, which ->
+                    // todo
+                }
+                .setNegativeButton("Не удалять") { dialog, which ->
+                    dialog.dismiss()
+                }
+            dialog.show()
+        }
+
 
         return VH(view)
     }
