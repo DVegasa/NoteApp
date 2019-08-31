@@ -35,6 +35,7 @@ class NoteEditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note_edit)
+
         val id = intent.extras?.getLong(ARG_NOTE_ID) ?: 0
         initToolbar()
         initViews()
