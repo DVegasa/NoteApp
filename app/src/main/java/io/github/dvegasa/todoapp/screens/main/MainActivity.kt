@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -12,21 +13,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.github.dvegasa.todoapp.R
 import io.github.dvegasa.todoapp.data_models.Note
-import io.github.dvegasa.todoapp.screens.note_edit.ARG_NOTE_ID
-import io.github.dvegasa.todoapp.screens.note_edit.NoteEditActivity
 import io.github.dvegasa.todoapp.screens.preferences.PREF_KEY_PREVIEW_LIMIT
 import io.github.dvegasa.todoapp.screens.preferences.SettingsActivity
-import io.github.dvegasa.todoapp.storage.RealmStorage
+import io.github.dvegasa.todoapp.storage.FakeData
 import io.github.dvegasa.todoapp.storage.UserPreferences
-import io.realm.Realm
-import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dialog_sort.view.*
 import org.jetbrains.anko.startActivity
+
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var adapter: RvNotesAdapterNew
-    private val storage = RealmStorage()
+    private lateinit var adapter: RvNotesAdapter
+    private val storage = FakeData()
     private val dialog by lazy {
         BottomSheetDialog(this)
     }
@@ -40,39 +39,38 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-//    private val sortHandler = View.OnClickListener { view ->
-//        when (view.id) {
-//            R.id.tvSortByTitle -> {
-//                adapter.list.sortBy {
-//                    it.title
-//                }
-//                adapter.notifyDataSetChanged()
-//            }
-//
-//            R.id.tvSortNewFirst -> {
-//                adapter.list.sortByDescending {
-//                    it.lastTimeModified
-//                }
-//                adapter.notifyDataSetChanged()
-//            }
-//
-//            R.id.tvSortOldFirst -> {
-//                adapter.list.sortBy {
-//                    it.lastTimeModified
-//                }
-//                adapter.notifyDataSetChanged()
-//
-//            }
-//        }
-//        dialog.dismiss()
-//    }
+    private val sortHandler = View.OnClickListener { view ->
+        when (view.id) {
+            R.id.tvSortByTitle -> {
+                adapter.list.sortBy {
+                    it.title
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            R.id.tvSortNewFirst -> {
+                adapter.list.sortByDescending {
+                    it.lastTimeModified
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            R.id.tvSortOldFirst -> {
+                adapter.list.sortBy {
+                    it.lastTimeModified
+                }
+                adapter.notifyDataSetChanged()
+
+            }
+        }
+        dialog.dismiss()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_main)
         initToolbar()
-        initFabListener()
         loadData()
     }
 
@@ -91,15 +89,12 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = "Записи"
     }
 
-    private fun initFabListener() {
-        fabCreate.setOnClickListener {
-            val noteId = RealmStorage().create()
-            startActivity<NoteEditActivity>(ARG_NOTE_ID to noteId)
-        }
-    }
-
     private fun loadData() {
-        initRvNotes(storage.getAllNotes())
+        storage.getAllNotes(object : FakeData.Callback {
+            override fun onResult(list: ArrayList<Note>) {
+                initRvNotes(list)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -150,7 +145,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRvNotes(notes: List<Note>) {
         Log.d("ed", "initRvNotes()")
-        adapter = RvNotesAdapterNew(Realm.getDefaultInstance().where<Note>().findAll())
+        adapter = RvNotesAdapter(notes as ArrayList<Note>)
         rvNotes.layoutManager = LinearLayoutManager(this)
         rvNotes.adapter = adapter
 
@@ -163,9 +158,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSortDialog() {
         val view = layoutInflater.inflate(R.layout.dialog_sort, null)
-//        view.tvSortByTitle.setOnClickListener(sortHandler)
-//        view.tvSortNewFirst.setOnClickListener(sortHandler)
-//        view.tvSortOldFirst.setOnClickListener(sortHandler)
+        view.tvSortByTitle.setOnClickListener(sortHandler)
+        view.tvSortNewFirst.setOnClickListener(sortHandler)
+        view.tvSortOldFirst.setOnClickListener(sortHandler)
         dialog.setContentView(view)
         dialog.show()
     }

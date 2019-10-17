@@ -14,7 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.dvegasa.todoapp.data_models.Note
-import io.github.dvegasa.todoapp.storage.RealmStorage
+import io.github.dvegasa.todoapp.storage.FakeData
 import io.github.dvegasa.todoapp.utils.PathUtils
 import kotlinx.android.synthetic.main.activity_attachments.*
 import org.jetbrains.anko.toast
@@ -28,7 +28,7 @@ class AttachmentsActivity : AppCompatActivity() {
     private var noteId: Long = -1
     private lateinit var note: Note
 
-    private val storage = RealmStorage()
+    private val storage = FakeData()
 
     private lateinit var adapter: RvAttachmentsAdapter
 
@@ -134,11 +134,11 @@ class AttachmentsActivity : AppCompatActivity() {
             finish()
             return
         }
-//        storage.getNoteById(noteId, object : FakeData.Callback {
-//            override fun onResult(list: ArrayList<Note>) {
-//                note = list[0]
-//            }
-//        })
+        storage.getNoteById(noteId, object : FakeData.Callback {
+            override fun onResult(list: ArrayList<Note>) {
+                note = list[0]
+            }
+        })
     }
 
     private fun initRvAttachments() {

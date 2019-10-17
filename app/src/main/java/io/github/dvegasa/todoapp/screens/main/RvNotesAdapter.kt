@@ -21,18 +21,14 @@ import java.util.*
 /**
  * 20.08.2019
  */
-
-// old
-class RvNotesAdapter(var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAdapter.VH>(),
-    Filterable {
+class RvNotesAdapter(var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAdapter.VH>(), Filterable{
 
     class VH(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     val customFilter = CustomFilter(this, list.clone() as ArrayList<Note>)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(io.github.dvegasa.todoapp.R.layout.item_note, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(io.github.dvegasa.todoapp.R.layout.item_note, parent, false)
         return VH(view)
     }
 
@@ -50,14 +46,12 @@ class RvNotesAdapter(var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAd
             val limit = UserPreferences(context).getPreviewBodySymbolsLimit()
             tvBody.text = if (note.body.length < limit) {
                 note.body
-            } else if (note.body.isEmpty()) {
-                "Empty note"
             } else {
                 "${note.body.subSequence(0, limit)}..."
             }
 
             tvDate.text = parseTime(note.lastTimeModified)
-            tvHeader.text = if (note.title.isNotEmpty()) note.title else "No topic"
+            tvHeader.text = note.title
 
             tvTags.text = NoteHelper.tagsPreview(note)
 
@@ -88,10 +82,7 @@ class RvNotesAdapter(var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAd
             if (query != null && query.isNotEmpty()) {
 
                 val filtered = filterList.filter {
-                    it.title.contains(query, true) || it.body.contains(
-                        query,
-                        true
-                    ) || it.tags.contains(query)
+                    it.title.contains(query, true) || it.body.contains(query, true) || it.tags.contains(query)
                 } as ArrayList<Note>
 
                 results.count = filtered.size

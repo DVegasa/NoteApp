@@ -16,9 +16,7 @@ import io.github.dvegasa.todoapp.R
 import io.github.dvegasa.todoapp.data_models.Note
 import io.github.dvegasa.todoapp.screens.attachments.ARG_NOTE_ID
 import io.github.dvegasa.todoapp.screens.attachments.AttachmentsActivity
-import io.github.dvegasa.todoapp.storage.RealmStorage
-import io.realm.Realm
-import io.realm.RealmList
+import io.github.dvegasa.todoapp.storage.FakeData
 import kotlinx.android.synthetic.main.activity_note_edit.*
 import org.jetbrains.anko.share
 import org.jetbrains.anko.startActivity
@@ -30,7 +28,7 @@ const val ARG_NOTE_ID = "id"
 class NoteEditActivity : AppCompatActivity() {
 
     private lateinit var note: Note
-    private val storage = RealmStorage()
+    private val storage = FakeData()
     private var isTagsShown: Boolean = false
     private var isReadOnly: Boolean = false
 
@@ -42,7 +40,6 @@ class NoteEditActivity : AppCompatActivity() {
         initToolbar()
         initViews()
         loadNote(id)
-        showNote()
     }
 
     private fun initToolbar() {
@@ -64,27 +61,16 @@ class NoteEditActivity : AppCompatActivity() {
                 }
             }
         })
-    }
 
-    override fun onPause() {
-        saveNote()
-        super.onPause()
     }
 
     private fun loadNote(id: Long) {
-        note = storage.getNoteById(id)
-    }
-
-    private fun saveNote() {
-        Realm.getDefaultInstance().executeTransaction {
-            note.body = etBody.text.toString()
-            note.title = etTitle.text.toString()
-            note.tags = RealmList(*getTags().toTypedArray())
-        }
-    }
-
-    private fun getTags(): List<String> {
-        return listOf("sample")
+        storage.getNoteById(id, object : FakeData.Callback {
+            override fun onResult(list: ArrayList<Note>) {
+                note = list[0]
+                showNote()
+            }
+        })
     }
 
     private fun showNote() {
