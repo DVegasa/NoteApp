@@ -1,6 +1,5 @@
 package io.github.dvegasa.todoapp.storage.fake_data
 
-import io.github.dvegasa.todoapp.data_models.FileInfo
 import io.github.dvegasa.todoapp.data_models.Note
 import io.github.dvegasa.todoapp.storage.NoteStorageInterface
 
@@ -37,28 +36,17 @@ class FakeData : NoteStorageInterface {
 
     private val list = arrayListOf(
         Note("BOOM! Bro <3", longText, 1, arrayListOf("work", "cv"), 1566259200, emptyList()),
-        Note(
-            "Фотографии кошек", "Мяу!", 2, arrayListOf("кошки", "фото", "кот"), 1565740800,
-            listOf(FileInfo("", 0f, "", "", ""), FileInfo("", 0f, "", "", ""))
-        ),
+        Note("Фотографии кошек", "Мяу!", 2, arrayListOf("кошки", "фото", "кот"), 1565740800),
         Note("Привет!", longText, 3, arrayListOf("хелло_мир", "hello_world", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир"), 1564740800, emptyList()),
         Note(
             "Фотографии кошек и маленьких котят и щенят",
             "Мяу!",
             4,
             arrayListOf("meow", "щенята"),
-            1563740800,
-            listOf(FileInfo("", 0f, "", "", ""))
-        ),
+            1563740800),
         Note(
             "Тут можно посмотреть файлы", "Мяу!", 5, arrayListOf("meow", "щенята"), 1563740800,
-            listOf(
-                fakeFileInfo("Кошечка"),
-                fakeFileInfo("Собачка"),
-                fakeFileInfo("Собачка №2"),
-                fakeFileInfo("Собачечка"),
-                fakeFileInfo("Мяукалка")
-            )
+            arrayListOf("", "", "")
         )
     )
 
@@ -78,7 +66,4 @@ class FakeData : NoteStorageInterface {
 
     fun getAllNotes() = list
 
-
-    private fun fakeFileInfo(title: String) =
-        FileInfo(title, (1..14).random().toFloat(), "png", "", "")
 }

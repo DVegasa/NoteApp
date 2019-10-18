@@ -9,7 +9,7 @@ data class Note(
     val id: Long,
     var tags: List<String>,
     var lastTimeModified: Long,
-    var attachments: List<FileInfo>
+    var attachments: List<String> = emptyList()
 ) {
     @Suppress("LocalVariableName")
     fun tagsToString(): String {
