@@ -11,7 +11,10 @@ class FakeData : NoteStorageInterface {
         cb.onResult(getAllNotes())
     }
 
-    override fun createNote(cb: NoteStorageInterface.Callback) {
+    override fun insertNote(
+        note: Note,
+        cb: NoteStorageInterface.Callback
+    ) {
 
     }
 
@@ -22,7 +25,7 @@ class FakeData : NoteStorageInterface {
     override fun updateNote(note: Note, cb: NoteStorageInterface.Callback) {
     }
 
-    override fun deleteNoteById(id: Long, cb: NoteStorageInterface.Callback) {
+    override fun deleteNote(note: Note, cb: NoteStorageInterface.Callback) {
     }
 
 
@@ -35,17 +38,25 @@ class FakeData : NoteStorageInterface {
                 "А где-то среди заснеженных холмов остались отпечатки маленьких лапок..."
 
     private val list = arrayListOf(
-        Note("BOOM! Bro <3", longText, 1, arrayListOf("work", "cv"), 1566259200, emptyList()),
-        Note("Фотографии кошек", "Мяу!", 2, arrayListOf("кошки", "фото", "кот"), 1565740800),
-        Note("Привет!", longText, 3, arrayListOf("хелло_мир", "hello_world", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир"), 1564740800, emptyList()),
+        Note(1, "BOOM! Bro <3", longText, arrayListOf("work", "cv"), 1566259200, emptyList()),
+        Note(2, "Фотографии кошек", "Мяу!", arrayListOf("кошки", "фото", "кот"), 1565740800),
         Note(
+            3,
+            "Привет!",
+            longText,
+            arrayListOf("хелло_мир", "hello_world", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир", "хелло_мир"),
+            1564740800,
+            emptyList()
+        ),
+        Note(
+            4,
             "Фотографии кошек и маленьких котят и щенят",
             "Мяу!",
-            4,
             arrayListOf("meow", "щенята"),
-            1563740800),
+            1563740800
+        ),
         Note(
-            "Тут можно посмотреть файлы", "Мяу!", 5, arrayListOf("meow", "щенята"), 1563740800,
+            5, "Тут можно посмотреть файлы", "Мяу!", arrayListOf("meow", "щенята"), 1563740800,
             arrayListOf("", "", "")
         )
     )

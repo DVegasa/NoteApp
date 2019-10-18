@@ -40,7 +40,9 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabCreateNote"
             android:layout_width="wrap_content"
+            android:clickable="true"
             android:layout_height="wrap_content"
             android:theme="@style/BlueAccent"
             android:layout_marginBottom="24dp"

@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.github.dvegasa.todoapp.R
 import io.github.dvegasa.todoapp.data_models.Note
+import io.github.dvegasa.todoapp.screens.note_edit.ARG_NOTE_ID
+import io.github.dvegasa.todoapp.screens.note_edit.NoteEditActivity
 import io.github.dvegasa.todoapp.screens.preferences.PREF_KEY_PREVIEW_LIMIT
 import io.github.dvegasa.todoapp.screens.preferences.SettingsActivity
 import io.github.dvegasa.todoapp.storage.NoteStorageInterface
-import io.github.dvegasa.todoapp.storage.fake_data.FakeData
+import io.github.dvegasa.todoapp.storage.room_sql.RoomStorage
 import io.github.dvegasa.todoapp.storage.shared_pref.UserPreferences
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_sort.view.*
@@ -26,7 +28,7 @@ import org.jetbrains.anko.startActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: RvNotesAdapter
-    private val storage: NoteStorageInterface = FakeData()
+    private val storage: NoteStorageInterface = RoomStorage()
     private val dialog by lazy {
         BottomSheetDialog(this)
     }
@@ -76,6 +78,7 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_main)
         initToolbar()
+        initFab()
         loadData()
     }
 
@@ -94,13 +97,24 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = "Записи"
     }
 
+    private fun initFab() {
+        fabCreateNote.setOnClickListener {
+            Log.d("ed__", "MainActivity.initFab(): fab clicked")
+            storage.insertNote(Note(), object : NoteStorageInterface.Callback {
+                override fun onResult(results: ArrayList<Note>?) {
+                    // Открыть только что созданную заметку
+                    Log.d("ed__", "MainActivity.initFab(): result received, opening new activity...")
+                    startActivity<NoteEditActivity>(ARG_NOTE_ID to results!![0].id)
+                }
+            })
+        }
+    }
+
     private fun loadData() {
         storage.getAllNotes(object : NoteStorageInterface.Callback {
-            override fun onFailure(ex: Exception) {
-            }
-
-            override fun onResult(results: ArrayList<Note>) {
-                initRvNotes(results)
+            override fun onResult(results: ArrayList<Note>?) {
+                initRvNotes(results!!)
+                adapter.notifyDataSetChanged()
             }
         })
     }

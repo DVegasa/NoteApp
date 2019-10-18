@@ -139,11 +139,8 @@ class AttachmentsActivity : AppCompatActivity() {
             return
         }
         storage.getNoteById(noteId, object : NoteStorageInterface.Callback {
-            override fun onFailure(ex: Exception) {
-            }
-
-            override fun onResult(results: ArrayList<Note>) {
-                note = results[0]
+            override fun onResult(results: ArrayList<Note>?) {
+                note = results!![0]
             }
         })
     }
