@@ -16,7 +16,8 @@ import io.github.dvegasa.todoapp.R
 import io.github.dvegasa.todoapp.data_models.Note
 import io.github.dvegasa.todoapp.screens.attachments.ARG_NOTE_ID
 import io.github.dvegasa.todoapp.screens.attachments.AttachmentsActivity
-import io.github.dvegasa.todoapp.storage.FakeData
+import io.github.dvegasa.todoapp.storage.NoteStorageInterface
+import io.github.dvegasa.todoapp.storage.fake_data.FakeData
 import kotlinx.android.synthetic.main.activity_note_edit.*
 import org.jetbrains.anko.share
 import org.jetbrains.anko.startActivity
@@ -28,7 +29,7 @@ const val ARG_NOTE_ID = "id"
 class NoteEditActivity : AppCompatActivity() {
 
     private lateinit var note: Note
-    private val storage = FakeData()
+    private val storage: NoteStorageInterface = FakeData()
     private var isTagsShown: Boolean = false
     private var isReadOnly: Boolean = false
 
@@ -65,9 +66,12 @@ class NoteEditActivity : AppCompatActivity() {
     }
 
     private fun loadNote(id: Long) {
-        storage.getNoteById(id, object : FakeData.Callback {
-            override fun onResult(list: ArrayList<Note>) {
-                note = list[0]
+        storage.getNoteById(id, object : NoteStorageInterface.Callback {
+            override fun onFailure(ex: Exception) {
+            }
+
+            override fun onResult(results: ArrayList<Note>) {
+                note = results[0]
                 showNote()
             }
         })

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.dvegasa.todoapp.data_models.Note
 import io.github.dvegasa.todoapp.screens.note_edit.ARG_NOTE_ID
 import io.github.dvegasa.todoapp.screens.note_edit.NoteEditActivity
-import io.github.dvegasa.todoapp.storage.UserPreferences
+import io.github.dvegasa.todoapp.storage.shared_pref.UserPreferences
 import io.github.dvegasa.todoapp.utils.NoteHelper
 import kotlinx.android.synthetic.main.item_note.view.*
 import org.jetbrains.anko.startActivity

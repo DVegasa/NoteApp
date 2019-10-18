@@ -1,4 +1,4 @@
-package io.github.dvegasa.todoapp.storage
+package io.github.dvegasa.todoapp.storage.shared_pref
 
 import android.content.Context
 import androidx.preference.PreferenceManager

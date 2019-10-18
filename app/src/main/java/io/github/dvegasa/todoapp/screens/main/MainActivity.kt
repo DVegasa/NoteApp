@@ -15,8 +15,9 @@ import io.github.dvegasa.todoapp.R
 import io.github.dvegasa.todoapp.data_models.Note
 import io.github.dvegasa.todoapp.screens.preferences.PREF_KEY_PREVIEW_LIMIT
 import io.github.dvegasa.todoapp.screens.preferences.SettingsActivity
-import io.github.dvegasa.todoapp.storage.FakeData
-import io.github.dvegasa.todoapp.storage.UserPreferences
+import io.github.dvegasa.todoapp.storage.NoteStorageInterface
+import io.github.dvegasa.todoapp.storage.fake_data.FakeData
+import io.github.dvegasa.todoapp.storage.shared_pref.UserPreferences
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_sort.view.*
 import org.jetbrains.anko.startActivity
@@ -25,12 +26,16 @@ import org.jetbrains.anko.startActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: RvNotesAdapter
-    private val storage = FakeData()
+    private val storage: NoteStorageInterface = FakeData()
     private val dialog by lazy {
         BottomSheetDialog(this)
     }
 
-    private val userPref by lazy { UserPreferences(this) }
+    private val userPref by lazy {
+        UserPreferences(
+            this
+        )
+    }
 
     private val sharedPrefListener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
         when (key) {
@@ -90,9 +95,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        storage.getAllNotes(object : FakeData.Callback {
-            override fun onResult(list: ArrayList<Note>) {
-                initRvNotes(list)
+        storage.getAllNotes(object : NoteStorageInterface.Callback {
+            override fun onFailure(ex: Exception) {
+            }
+
+            override fun onResult(results: ArrayList<Note>) {
+                initRvNotes(results)
             }
         })
     }
