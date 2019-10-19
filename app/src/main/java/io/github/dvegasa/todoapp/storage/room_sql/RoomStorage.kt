@@ -9,6 +9,8 @@ import io.github.dvegasa.todoapp.storage.NoteStorageInterface
 /**
  * 18.10.2019
  */
+
+
 class RoomStorage() : NoteStorageInterface {
 
     val dao = MyApplication.appDatabase.noteDao()
@@ -23,19 +25,19 @@ class RoomStorage() : NoteStorageInterface {
         }).start()
     }
 
-    override fun insertNote(note: Note, cb: NoteStorageInterface.Callback) {
+    override fun createNote(cb: NoteStorageInterface.Callback) {
         Thread(Runnable {
-            Log.d("ed__", "RoomStorage.insertNote(): get request for adding")
+            Log.d("ed__", "RoomStorage.createNote(): get request for adding")
 
             // Создаём новую заметку и получаем её id
-            val id = dao.insertNote(note)
-            Log.d("ed__", "RoomStorage.insertNote(): id received = $id")
-            Log.d("ed__", "RoomStorage.insertNote(): requesting for object Note...")
+            val id = dao.insertNote(Note())
+            Log.d("ed__", "RoomStorage.createNote(): id received = $id")
+            Log.d("ed__", "RoomStorage.createNote(): requesting for object Note...")
 
             // Получаем объект этой заметки
             getNoteById(id, object : NoteStorageInterface.Callback {
                 override fun onResult(results: ArrayList<Note>?) {
-                    Log.d("ed__", "RoomStorage.insertNote(): note received. Sending to UI thread..")
+                    Log.d("ed__", "RoomStorage.createNote(): note received. Sending to UI thread..")
                     h.post {
                         // Отправляем объект только что созданной заметки в UI поток
                         cb.onResult(arrayListOf(results!![0]))
@@ -64,9 +66,9 @@ class RoomStorage() : NoteStorageInterface {
         }).start()
     }
 
-    override fun deleteNote(note: Note, cb: NoteStorageInterface.Callback) {
+    override fun deleteNote(id: Long, cb: NoteStorageInterface.Callback) {
         Thread(Runnable {
-            dao.deleteNote(note)
+            dao.deleteNote(id)
             h.post {
                 cb.onResult(null)
             }

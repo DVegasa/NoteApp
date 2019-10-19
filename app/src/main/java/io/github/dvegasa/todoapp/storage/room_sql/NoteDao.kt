@@ -1,6 +1,9 @@
 package io.github.dvegasa.todoapp.storage.room_sql
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import io.github.dvegasa.todoapp.data_models.Note
 
 /**
@@ -13,15 +16,18 @@ interface NoteDao {
     @Query("SELECT * FROM note")
     fun getAllNotes(): List<Note>
 
-    @Insert
-    fun insertNote(note: Note): Long
-
     @Query("SELECT * FROM note WHERE id = :id")
     fun getNoteById(id: Long): List<Note>
 
-    @Update
-    fun updateNote(note: Note): Int
+    /**
+     * @return id of created Note
+     */
+    @Insert
+    fun insertNote(note: Note): Long
 
-    @Delete
-    fun deleteNote(note: Note): Int
+    @Update
+    fun updateNote(note: Note)
+
+    @Query("DELETE FROM note WHERE id = :id")
+    fun deleteNote(id: Long)
 }

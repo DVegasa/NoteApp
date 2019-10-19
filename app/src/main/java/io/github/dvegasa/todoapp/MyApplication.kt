@@ -25,4 +25,5 @@ class MyApplication : Application() {
             "note.appDatabase"
         ).build()
     }
+
 }

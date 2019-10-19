@@ -79,7 +79,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initToolbar()
         initFab()
-        loadData()
+        initRvNotes()
+        updateNotes()
     }
 
     override fun onResume() {
@@ -100,21 +101,21 @@ class MainActivity : AppCompatActivity() {
     private fun initFab() {
         fabCreateNote.setOnClickListener {
             Log.d("ed__", "MainActivity.initFab(): fab clicked")
-            storage.insertNote(Note(), object : NoteStorageInterface.Callback {
+            storage.createNote(object : NoteStorageInterface.Callback {
                 override fun onResult(results: ArrayList<Note>?) {
                     // Открыть только что созданную заметку
                     Log.d("ed__", "MainActivity.initFab(): result received, opening new activity...")
+                    updateNotes()
                     startActivity<NoteEditActivity>(ARG_NOTE_ID to results!![0].id)
                 }
             })
         }
     }
 
-    private fun loadData() {
+    private fun updateNotes() {
         storage.getAllNotes(object : NoteStorageInterface.Callback {
             override fun onResult(results: ArrayList<Note>?) {
-                initRvNotes(results!!)
-                adapter.notifyDataSetChanged()
+                updateRvNotesAdapterList(results!!)
             }
         })
     }
@@ -165,9 +166,9 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun initRvNotes(notes: List<Note>) {
+    private fun initRvNotes() {
         Log.d("ed", "initRvNotes()")
-        adapter = RvNotesAdapter(notes as ArrayList<Note>)
+        adapter = RvNotesAdapter(arrayListOf())
         rvNotes.layoutManager = LinearLayoutManager(this)
         rvNotes.adapter = adapter
 
@@ -176,6 +177,11 @@ class MainActivity : AppCompatActivity() {
             (rvNotes.layoutManager as LinearLayoutManager).orientation
         )
         rvNotes.addItemDecoration(dividerItemDecoration)
+    }
+
+    private fun updateRvNotesAdapterList(notes: ArrayList<Note>) {
+        adapter.list = notes
+        adapter.notifyDataSetChanged()
     }
 
     private fun showSortDialog() {

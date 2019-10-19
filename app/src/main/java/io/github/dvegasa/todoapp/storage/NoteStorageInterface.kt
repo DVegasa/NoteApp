@@ -16,11 +16,13 @@ interface NoteStorageInterface {
 
     fun getAllNotes(cb: Callback)
 
-    fun insertNote(note: Note, cb: Callback)
+    fun createNote(cb: Callback)
 
     fun getNoteById(id: Long, cb: Callback)
 
     fun updateNote(note: Note, cb: Callback)
 
-    fun deleteNote(note: Note, cb: Callback)
+    fun deleteNote(id: Long, cb: Callback)
 }
+
+
