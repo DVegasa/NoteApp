@@ -23,5 +23,23 @@ class NoteHelper {
             }
             return a.trim()
         }
+
+        fun tagStringToList(tags_: String): ArrayList<String> {
+            var tags = tags_.replace(" ", "", true)
+            val list = arrayListOf<String>()
+            var t = ""
+            for (i in tags.indices) {
+                if (tags[i] == '#') {
+                    if (i != 0) {
+                        list.add(t)
+                    }
+                    t = ""
+                } else {
+                    t += tags[i]
+                }
+            }
+            list.add(t)
+            return list
+        }
     }
 }

@@ -86,6 +86,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         userPref.sharedPref.registerOnSharedPreferenceChangeListener(sharedPrefListener)
+        updateNotes()
     }
 
     override fun onPause() {

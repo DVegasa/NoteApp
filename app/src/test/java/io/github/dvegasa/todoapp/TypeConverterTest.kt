@@ -1,5 +1,6 @@
 package io.github.dvegasa.todoapp
 
+import io.github.dvegasa.todoapp.screens.note_edit.NoteEditActivity
 import io.github.dvegasa.todoapp.utils.TypeConverter
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -10,6 +11,8 @@ import org.junit.Test
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class TypeConverterTest {
+
+
     @Test
     fun stringToList() {
         assertEquals(

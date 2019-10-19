@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -18,6 +19,8 @@ import io.github.dvegasa.todoapp.screens.attachments.ARG_NOTE_ID
 import io.github.dvegasa.todoapp.screens.attachments.AttachmentsActivity
 import io.github.dvegasa.todoapp.storage.NoteStorageInterface
 import io.github.dvegasa.todoapp.storage.room_sql.RoomStorage
+import io.github.dvegasa.todoapp.utils.NoteHelper
+import io.github.dvegasa.todoapp.utils.SystemUtils
 import kotlinx.android.synthetic.main.activity_note_edit.*
 import org.jetbrains.anko.share
 import org.jetbrains.anko.startActivity
@@ -41,6 +44,11 @@ class NoteEditActivity : AppCompatActivity() {
         initToolbar()
         initViews()
         loadNote(id)
+    }
+
+    override fun onPause() {
+        saveNote()
+        super.onPause()
     }
 
     private fun initToolbar() {
@@ -140,7 +148,10 @@ class NoteEditActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            android.R.id.home -> finish()
+            android.R.id.home -> {
+                saveNote()
+                finish()
+            }
             R.id.action_share -> {
                 val text = "${note.title}\n\n${note.body}\n\n${note.tagsToString()}"
                 share(text)
@@ -160,5 +171,17 @@ class NoteEditActivity : AppCompatActivity() {
             a.setGravity(Gravity.TOP, 0, 22)
             a.show()
         }
+    }
+
+    private fun saveNote() {
+        note.title = etTitle.text.toString()
+        note.body = etBody.text.toString()
+        note.lastTimeModified = SystemUtils.getCurrentTime()
+        note.tags = NoteHelper.tagStringToList(etTags.text.toString())
+        storage.updateNote(note, object : NoteStorageInterface.Callback {
+            override fun onResult(results: ArrayList<Note>?) {
+                Log.d("ed__", "NoteEditActivity.saveNote(): Note is saved")
+            }
+        })
     }
 }
