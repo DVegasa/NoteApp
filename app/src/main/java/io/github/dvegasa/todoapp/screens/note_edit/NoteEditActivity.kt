@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import io.github.dvegasa.todoapp.R
@@ -142,7 +143,8 @@ class NoteEditActivity : AppCompatActivity() {
             else -> R.drawable.ic_attachment_number_9_plus
         }
 
-        menu?.findItem(R.id.action_attachments)?.icon = ResourcesCompat.getDrawable(resources, icon, null)
+        menu?.findItem(R.id.action_attachments)?.icon =
+            ResourcesCompat.getDrawable(resources, icon, null)
         return true
     }
 
@@ -159,15 +161,40 @@ class NoteEditActivity : AppCompatActivity() {
             R.id.action_attachments -> {
                 startActivity<AttachmentsActivity>(ARG_NOTE_ID to note.id)
             }
+            R.id.action_delete -> {
+                showDeleteDialog()
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showDeleteDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Подтвердите удаление")
+            .setMessage(etTitle.text)
+            .setPositiveButton("Удалить") { dialog, which ->
+                storage.deleteNote(note.id, object : NoteStorageInterface.Callback {
+                    override fun onResult(results: ArrayList<Note>?) {
+                        toast("Заметка удалена")
+                        finish()
+                    }
+                })
+            }
+            .setNegativeButton("Отмена") { dialog, which ->
+                dialog.dismiss()
+            }.show()
+
     }
 
     private fun setTagsEnabled() {
         etTags.visibility = if (isTagsShown) View.VISIBLE else View.GONE
 
         if (isTagsShown) {
-            val a = Toast.makeText(this, "Для разделения тегов используйте символ решётки #", Toast.LENGTH_SHORT)
+            val a = Toast.makeText(
+                this,
+                "Для разделения тегов используйте символ решётки #",
+                Toast.LENGTH_SHORT
+            )
             a.setGravity(Gravity.TOP, 0, 22)
             a.show()
         }
