@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.dvegasa.todoapp.data_models.FileInfo
 import io.github.dvegasa.todoapp.data_models.Note
 import io.github.dvegasa.todoapp.storage.NoteStorageInterface
-import io.github.dvegasa.todoapp.storage.fake_data.FakeData
 import io.github.dvegasa.todoapp.storage.file_worker.FileConverter
+import io.github.dvegasa.todoapp.storage.room_sql.RoomStorage
 import io.github.dvegasa.todoapp.utils.PathUtils
 import kotlinx.android.synthetic.main.activity_attachments.*
 import org.jetbrains.anko.toast
@@ -31,7 +31,7 @@ class AttachmentsActivity : AppCompatActivity() {
     private var noteId: Long = -1
     private lateinit var note: Note
 
-    private val storage = FakeData()
+    private val storage = RoomStorage()
     private val fileConverter = FileConverter()
 
     private lateinit var adapter: RvAttachmentsAdapter
@@ -43,7 +43,6 @@ class AttachmentsActivity : AppCompatActivity() {
         getNoteId()
         initViews()
         loadNote()
-        initRvAttachments()
         setBtnAddAttachmentsEnabled(false)
         checkForPermissions()
     }
@@ -141,6 +140,7 @@ class AttachmentsActivity : AppCompatActivity() {
         storage.getNoteById(noteId, object : NoteStorageInterface.Callback {
             override fun onResult(results: ArrayList<Note>?) {
                 note = results!![0]
+                initRvAttachments()
             }
         })
     }
