@@ -7,12 +7,13 @@ import io.github.dvegasa.todoapp.storage.NoteStorageInterface
  * 21.08.2019
  */
 class FakeData : NoteStorageInterface {
-    override fun createNote(cb: NoteStorageInterface.Callback) {
+    override fun deleteNotes(ids: List<Long>, cb: NoteStorageInterface.Callback) {
+    }
 
+    override fun createNote(cb: NoteStorageInterface.Callback) {
     }
 
     override fun deleteNote(id: Long, cb: NoteStorageInterface.Callback) {
-
     }
 
     override fun getAllNotes(cb: NoteStorageInterface.Callback) {

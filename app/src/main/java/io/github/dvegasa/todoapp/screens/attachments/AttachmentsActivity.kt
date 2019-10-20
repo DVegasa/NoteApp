@@ -54,7 +54,6 @@ class AttachmentsActivity : AppCompatActivity() {
         ) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
-                // todo It doesn't work
                 val dialog = AlertDialog.Builder(this)
                     .setTitle("Чтобы добавить файл нужно предоставить разрешение доступа к памяти")
                     .setPositiveButton("Разрешить") { dialog, which ->

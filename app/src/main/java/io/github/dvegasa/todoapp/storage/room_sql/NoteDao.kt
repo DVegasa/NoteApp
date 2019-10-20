@@ -30,4 +30,7 @@ interface NoteDao {
 
     @Query("DELETE FROM note WHERE id = :id")
     fun deleteNote(id: Long)
+
+    @Query("DELETE FROM note WHERE id IN (:ids)")
+    fun deleteNotes(ids: Array<Long>)
 }

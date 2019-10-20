@@ -23,6 +23,8 @@ interface NoteStorageInterface {
     fun updateNote(note: Note, cb: Callback)
 
     fun deleteNote(id: Long, cb: Callback)
+
+    fun deleteNotes(ids: List<Long>, cb: Callback)
 }
 
 

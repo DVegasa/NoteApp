@@ -77,4 +77,12 @@ class RoomStorage() : NoteStorageInterface {
         }).start()
     }
 
+    override fun deleteNotes(ids: List<Long>, cb: NoteStorageInterface.Callback) {
+        Thread(Runnable {
+            dao.deleteNotes(ids.toTypedArray())
+            h.post {
+                cb.onResult(null)
+            }
+        }).start()
+    }
 }

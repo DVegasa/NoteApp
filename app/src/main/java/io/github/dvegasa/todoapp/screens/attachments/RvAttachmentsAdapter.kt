@@ -24,7 +24,7 @@ class RvAttachmentsAdapter(var list: List<FileInfo>) : RecyclerView.Adapter<RvAt
             val dialog = AlertDialog.Builder(parent.context)
                 .setTitle("Удалить файл?")
                 .setPositiveButton("Удалить") { dialog, which ->
-                    // todo
+                    // todo Removing selected notes
                 }
                 .setNegativeButton("Не удалять") { dialog, which ->
                     dialog.dismiss()

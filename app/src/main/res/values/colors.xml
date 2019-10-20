@@ -12,4 +12,6 @@
     <color name="colorDanger">#CB0000</color>
 
     <color name="colorWhite">#fff</color>
+
+    <color name="colorNotePicked">#572485DE</color>
 </resources>
