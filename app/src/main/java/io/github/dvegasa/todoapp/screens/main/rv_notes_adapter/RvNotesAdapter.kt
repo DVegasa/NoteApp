@@ -23,10 +23,15 @@ import java.util.*
 /**
  * 20.08.2019
  */
-class RvNotesAdapter(var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAdapter.VH>(),
+
+const val SORT_TITLE = 1000
+const val SORT_NEW_FIRST = 1001
+const val SORT_OLD_FIRST = 1002
+
+class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAdapter.VH>(),
     Filterable {
 
-    val customFilter = CustomFilter(this, list.clone() as ArrayList<Note>)
+    var customFilter = CustomFilter(this, list.clone() as ArrayList<Note>)
 
     var tracker: SelectionTracker<Long>? = null
 
@@ -34,6 +39,29 @@ class RvNotesAdapter(var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAd
 
     init {
         setHasStableIds(true)
+    }
+
+    fun doSort(sort: Int) {
+        when (sort) {
+            SORT_TITLE -> list.sortBy {
+                it.title
+            }
+            SORT_NEW_FIRST -> list.sortByDescending {
+                it.lastTimeModified
+            }
+
+
+            SORT_OLD_FIRST -> list.sortBy {
+                it.lastTimeModified
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    fun updateList(l: ArrayList<Note>) {
+        this.list = l
+        customFilter = CustomFilter(this, l.clone() as ArrayList<Note>)
+        notifyDataSetChanged()
     }
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -57,7 +85,7 @@ class RvNotesAdapter(var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAd
                 }
 
                 tvDate.text = parseTime(note.lastTimeModified)
-                tvHeader.text = note.title
+                tvHeader.text = note.title + " id #${note.id}"
 
                 tvTags.text = NoteHelper.tagsPreview(note)
 
@@ -128,7 +156,7 @@ class RvNotesAdapter(var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAd
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
             adapter.list = results?.values as ArrayList<Note>
             adapter.notifyDataSetChanged()
+            //adapter.updateList(results?.values as ArrayList<Note>)
         }
-
     }
 }

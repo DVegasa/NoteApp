@@ -11,15 +11,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
-import androidx.recyclerview.selection.StableIdKeyProvider
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.github.dvegasa.todoapp.R
 import io.github.dvegasa.todoapp.data_models.Note
-import io.github.dvegasa.todoapp.screens.main.rv_notes_adapter.MyItemDetailsLookup
-import io.github.dvegasa.todoapp.screens.main.rv_notes_adapter.RvNotesAdapter
+import io.github.dvegasa.todoapp.screens.main.rv_notes_adapter.*
 import io.github.dvegasa.todoapp.screens.note_edit.ARG_NOTE_ID
 import io.github.dvegasa.todoapp.screens.note_edit.NoteEditActivity
 import io.github.dvegasa.todoapp.screens.preferences.PREF_KEY_PREVIEW_LIMIT
@@ -56,27 +54,9 @@ class MainActivity : AppCompatActivity() {
 
     private val sortHandler = View.OnClickListener { view ->
         when (view.id) {
-            R.id.tvSortByTitle -> {
-                adapter.list.sortBy {
-                    it.title
-                }
-                adapter.notifyDataSetChanged()
-            }
-
-            R.id.tvSortNewFirst -> {
-                adapter.list.sortByDescending {
-                    it.lastTimeModified
-                }
-                adapter.notifyDataSetChanged()
-            }
-
-            R.id.tvSortOldFirst -> {
-                adapter.list.sortBy {
-                    it.lastTimeModified
-                }
-                adapter.notifyDataSetChanged()
-
-            }
+            R.id.tvSortByTitle -> adapter.doSort(SORT_TITLE)
+            R.id.tvSortNewFirst -> adapter.doSort(SORT_NEW_FIRST)
+            R.id.tvSortOldFirst -> adapter.doSort(SORT_OLD_FIRST)
         }
         dialog.dismiss()
     }
@@ -85,9 +65,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_main)
+        initRvNotes()
         initToolbar()
         initFab()
-        initRvNotes()
         updateNotes()
     }
 
@@ -212,7 +192,7 @@ class MainActivity : AppCompatActivity() {
         tracker = SelectionTracker.Builder<Long>(
             "mySelection",
             rvNotes,
-            StableIdKeyProvider(rvNotes),
+            MyItemKeyProvider(rvNotes),
             MyItemDetailsLookup(rvNotes),
             StorageStrategy.createLongStorage()
         ).withSelectionPredicate(
@@ -252,8 +232,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun updateRvNotesAdapterList(notes: ArrayList<Note>) {
-        adapter.list = notes
-        adapter.notifyDataSetChanged()
+        adapter.updateList(notes)
     }
 
     private fun showSortDialog() {
