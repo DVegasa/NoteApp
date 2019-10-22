@@ -16,6 +16,7 @@ data class Note(
     var title: String = "",
     var body: String = "",
     var tags: List<String> = arrayListOf(),
+    var isLocked: Boolean = false,
     var lastTimeModified: Long = SystemUtils.getCurrentTime(),
     var attachments: List<String> = arrayListOf()
 ) {

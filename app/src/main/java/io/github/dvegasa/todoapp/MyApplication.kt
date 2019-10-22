@@ -23,7 +23,9 @@ class MyApplication : Application() {
             this,
             AppDatabase::class.java,
             "note.appDatabase"
-        ).build()
+        )
+            .fallbackToDestructiveMigration() // this recreate DB, if DB's version changes. Keep it only in debug
+            .build()
     }
 
 }

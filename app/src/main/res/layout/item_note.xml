@@ -54,6 +54,18 @@
                 tools:test="2"/>
     </LinearLayout>
 
+
+    <ImageView
+            android:id="@+id/ivIsLocked"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_lock_activated_in_note"
+            app:layout_constraintBottom_toBottomOf="@+id/tvDate"
+            app:layout_constraintEnd_toStartOf="@+id/llAttachments"
+            app:layout_constraintTop_toTopOf="@+id/tvDate"
+            android:layout_marginEnd="12dp"/>
+
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

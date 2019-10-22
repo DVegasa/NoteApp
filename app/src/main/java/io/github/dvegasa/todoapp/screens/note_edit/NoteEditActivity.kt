@@ -35,7 +35,11 @@ class NoteEditActivity : AppCompatActivity() {
     private lateinit var note: Note
     private val storage: NoteStorageInterface = RoomStorage()
     private var isTagsShown: Boolean = false
-    private var isReadOnly: Boolean = false
+    private var menu: Menu? = null
+        set(value) {
+            setNoteReadOnlyEnabled(note.isLocked, true)
+            field = value
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,10 +91,12 @@ class NoteEditActivity : AppCompatActivity() {
         etTitle.setText(note.title)
         etBody.setText(note.body)
         etTags.setText(note.tagsToString())
+        // setNoteReadOnlyEnabled(note.isLocked, true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.edit_note_screen_menu, menu)
+        this.menu = menu
         menu?.findItem(R.id.action_tags)?.setOnMenuItemClickListener {
             isTagsShown = !isTagsShown
             if (isTagsShown) {
@@ -107,25 +113,8 @@ class NoteEditActivity : AppCompatActivity() {
         }
 
         menu?.findItem(R.id.action_lock)?.setOnMenuItemClickListener {
-            isReadOnly = !isReadOnly
-            val edits = listOf<EditText>(etTitle, etTags, etBody)
-
-            edits.forEach {
-                it.isFocusable = !isReadOnly
-                it.isFocusableInTouchMode = !isReadOnly
-                it.clearFocus()
-            }
-
-            if (isReadOnly) {
-                menu.findItem(R.id.action_lock).icon =
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_activated, null)
-                toast("Только чтение")
-            } else {
-                menu.findItem(R.id.action_lock).icon =
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_normal, null)
-                toast("Можно редактировать")
-            }
-
+            note.isLocked = !note.isLocked
+            setNoteReadOnlyEnabled(note.isLocked, false)
             false
         }
 
@@ -145,7 +134,35 @@ class NoteEditActivity : AppCompatActivity() {
 
         menu?.findItem(R.id.action_attachments)?.icon =
             ResourcesCompat.getDrawable(resources, icon, null)
+
+        if (note.isLocked) {
+            menu?.findItem(R.id.action_lock)?.icon =
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_activated, null)
+        } else {
+            menu?.findItem(R.id.action_lock)?.icon =
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_normal, null)
+        }
         return true
+    }
+
+    private fun setNoteReadOnlyEnabled(isReadOnly: Boolean, calledOnInit: Boolean) {
+        val edits = listOf<EditText>(etTitle, etTags, etBody)
+        Log.d("ed__", "NoteEditActivity.setNoteReadOnlyEnabled: calledOnInit=$calledOnInit")
+        edits.forEach {
+            it.isFocusable = !isReadOnly
+            it.isFocusableInTouchMode = !isReadOnly
+            it.clearFocus()
+        }
+
+        if (isReadOnly) {
+            menu?.findItem(R.id.action_lock)?.icon =
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_activated, null)
+            toast("Только чтение")
+        } else {
+            menu?.findItem(R.id.action_lock)?.icon =
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_normal, null)
+            if (!calledOnInit) toast("Можно редактировать")
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

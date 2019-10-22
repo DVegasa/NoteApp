@@ -77,6 +77,8 @@ class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<R
                     }
                 }
 
+                ivIsLocked.visibility = if (note.isLocked) View.VISIBLE else View.GONE
+
                 val limit = UserPreferences(context).getPreviewBodySymbolsLimit()
                 tvBody.text = if (note.body.length < limit) {
                     note.body
