@@ -3,11 +3,12 @@
 Minor визуальные  {
     * @All            / Размытая иконка приложения
 
-    * @MainScreen     / Тулбар во время поиска голубой, а должен быть белым (см. дизайн макеты в фигме)
     * @MainScreen     / Нет стрелки назад во время поиска
 
     * @EditNoteScreen / Меню -> Текст "удалить" должен быть красным
     * @EditNoteScreen / Поменять цвет statusbar на белый
+    
+    * @MainScreen     / Обдумать нормальный поиск
 }
 
 Major визуальные {
@@ -15,7 +16,7 @@ Major визуальные {
 }
 
 Minor поведенческие {
-
+   * @MainScreen      / Item clickable after deleting at MainScreen, when animation playing => app crash when it tries save note at null                           object at NoteEditScreen
 }
 
 Major поведенческие {
