@@ -8,6 +8,7 @@ import io.github.dvegasa.todoapp.data_models.Note
 class NoteHelper {
     companion object {
         fun tagsPreview(note: Note): String {
+            if (note.tags.isEmpty()) return ""
             var a = ""
 
             var usedTags = 0

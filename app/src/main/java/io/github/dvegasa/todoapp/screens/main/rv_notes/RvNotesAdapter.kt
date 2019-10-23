@@ -1,6 +1,7 @@
-package io.github.dvegasa.todoapp.screens.main.rv_notes_adapter
+package io.github.dvegasa.todoapp.screens.main.rv_notes
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,8 @@ class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<R
 
     var isPickingMode = false
 
+    var isElementsClickable = true
+
     init {
         setHasStableIds(true)
     }
@@ -72,7 +75,9 @@ class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<R
                 val note = list[position]
 
                 setOnClickListener {
+                    if (!isElementsClickable) return@setOnClickListener
                     if (!isPickingMode) {
+                        Log.d("ed__", "== {1}")
                         context.startActivity<NoteEditActivity>(ARG_NOTE_ID to note.id)
                     }
                 }
@@ -122,8 +127,7 @@ class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<R
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun parseTime(millis_: Long): String {
-        val millis = millis_ * 1000
+    private fun parseTime(millis: Long): String {
         val formatter = SimpleDateFormat("dd MMM", Locale.getDefault())
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = millis

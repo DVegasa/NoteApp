@@ -1,4 +1,4 @@
-package io.github.dvegasa.todoapp.screens.main.rv_notes_adapter
+package io.github.dvegasa.todoapp.screens.main.rv_notes
 
 import android.view.MotionEvent
 import androidx.recyclerview.selection.ItemDetailsLookup
