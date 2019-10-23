@@ -30,11 +30,16 @@ import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 
-class MainActivity : AppCompatActivity(), RvNotesManager.Callback {
+class MainActivity :
+    AppCompatActivity(),
+    RvNotesManager.Callback,
+    ToolbarAndMenuManager.Callback {
 
     private val storage: NoteStorageInterface = RoomStorage()
     private var rvNotesManager: RvNotesManager? = null
-    private var toolbarMenu: Menu? = null
+    private var toolbarManager: ToolbarAndMenuManager? = null
+
+
     private val dialog by lazy {
         BottomSheetDialog(this)
     }
@@ -63,9 +68,15 @@ class MainActivity : AppCompatActivity(), RvNotesManager.Callback {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_main)
-        rvNotesManager = RvNotesManager(this, rvNotes, storage)
-        rvNotesManager?.init()
-        initToolbar()
+
+        rvNotesManager = RvNotesManager(this, rvNotes, storage).apply {
+            init()
+        }
+
+        toolbarManager = ToolbarAndMenuManager(this).apply {
+            init(toolbar)
+        }
+
         initFab()
         initSearchComponent()
     }
@@ -79,11 +90,6 @@ class MainActivity : AppCompatActivity(), RvNotesManager.Callback {
     override fun onPause() {
         super.onPause()
         userPref.sharedPref.unregisterOnSharedPreferenceChangeListener(sharedPrefListener)
-    }
-
-    private fun initToolbar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.title = "Записи"
     }
 
     private fun initFab() {
@@ -105,22 +111,14 @@ class MainActivity : AppCompatActivity(), RvNotesManager.Callback {
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        toolbarMenu = menu
-        menuInflater.inflate(R.menu.main_screen_menu, toolbarMenu)
-        return true
+        return toolbarManager?.onCreateOptionsMenu(menu) ?: true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.action_sort -> showSortDialog()
-            R.id.action_settings -> showSettings()
-            R.id.action_delete_notes -> showMultipleDeletionDialog()
-        }
-
-        return true
+        return toolbarManager?.onOptionsItemSelected(item) ?: true
     }
 
-    private fun showMultipleDeletionDialog() {
+    override fun showMultipleDeletionDialog() {
         val selected = rvNotesManager?.getListOfSelected() ?: arrayListOf<Long>()
         val n = selected.size
 
@@ -159,12 +157,10 @@ class MainActivity : AppCompatActivity(), RvNotesManager.Callback {
 
     override fun setDeletionModeEnabled(b: Boolean) {
         Log.d("ed__", "MainActivity.setDeletionModeEnabled(): $b")
-        toolbarMenu?.findItem(R.id.action_delete_notes)?.isVisible = b
-        toolbarMenu?.findItem(R.id.action_settings)?.isVisible = !b
-        toolbarMenu?.findItem(R.id.action_sort)?.isVisible = !b
+        toolbarManager?.setToolbarDeletitionModeEnabled(b)
     }
 
-    private fun showSortDialog() {
+    override fun showSortDialog() {
         val view = layoutInflater.inflate(R.layout.dialog_sort, null)
         view.tvSortByTitle.setOnClickListener(sortHandler)
         view.tvSortNewFirst.setOnClickListener(sortHandler)
@@ -173,7 +169,7 @@ class MainActivity : AppCompatActivity(), RvNotesManager.Callback {
         dialog.show()
     }
 
-    private fun showSettings() {
+    override fun showSettings() {
         startActivity<SettingsActivity>()
     }
 }
