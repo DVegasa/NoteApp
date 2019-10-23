@@ -32,12 +32,12 @@ const val ARG_NOTE_ID = "id"
 
 class NoteEditActivity : AppCompatActivity() {
 
-    private lateinit var note: Note
+    private var note: Note? = null
     private val storage: NoteStorageInterface = RoomStorage()
     private var isTagsShown: Boolean = false
     private var menu: Menu? = null
         set(value) {
-            setNoteReadOnlyEnabled(note.isLocked, true)
+            setNoteReadOnlyEnabled(note?.isLocked ?: false, true)
             field = value
         }
 
@@ -88,9 +88,9 @@ class NoteEditActivity : AppCompatActivity() {
     }
 
     private fun showNote() {
-        etTitle.setText(note.title)
-        etBody.setText(note.body)
-        etTags.setText(note.tagsToString())
+        etTitle.setText(note?.title)
+        etBody.setText(note?.body)
+        etTags.setText(note?.tagsToString())
         // setNoteReadOnlyEnabled(note.isLocked, true)
     }
 
@@ -113,12 +113,12 @@ class NoteEditActivity : AppCompatActivity() {
         }
 
         menu?.findItem(R.id.action_lock)?.setOnMenuItemClickListener {
-            note.isLocked = !note.isLocked
-            setNoteReadOnlyEnabled(note.isLocked, false)
+            note?.isLocked = !note?.isLocked!!
+            setNoteReadOnlyEnabled(note?.isLocked ?: false, false)
             false
         }
 
-        val icon = when (note.attachments.size) {
+        val icon = when (note?.attachments?.size) {
             0 -> R.drawable.ic_attach_file_toolbar_black_24dp
             1 -> R.drawable.ic_attachment_number_1
             2 -> R.drawable.ic_attachment_number_2
@@ -135,7 +135,7 @@ class NoteEditActivity : AppCompatActivity() {
         menu?.findItem(R.id.action_attachments)?.icon =
             ResourcesCompat.getDrawable(resources, icon, null)
 
-        if (note.isLocked) {
+        if (note?.isLocked == true) {
             menu?.findItem(R.id.action_lock)?.icon =
                 ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_activated, null)
         } else {
@@ -172,11 +172,11 @@ class NoteEditActivity : AppCompatActivity() {
                 finish()
             }
             R.id.action_share -> {
-                val text = "${note.title}\n\n${note.body}\n\n${note.tagsToString()}"
+                val text = "${note?.title}\n\n${note?.body}\n\n${note?.tagsToString()}"
                 share(text)
             }
             R.id.action_attachments -> {
-                startActivity<AttachmentsActivity>(ARG_NOTE_ID to note.id)
+                startActivity<AttachmentsActivity>(ARG_NOTE_ID to note?.id)
             }
             R.id.action_delete -> {
                 showDeleteDialog()
@@ -190,7 +190,7 @@ class NoteEditActivity : AppCompatActivity() {
             .setTitle("Подтвердите удаление")
             .setMessage(etTitle.text)
             .setPositiveButton("Удалить") { dialog, which ->
-                storage.deleteNote(note.id, object : NoteStorageInterface.Callback {
+                storage.deleteNote(note!!.id, object : NoteStorageInterface.Callback {
                     override fun onResult(results: ArrayList<Note>?) {
                         toast("Заметка удалена")
                         finish()
@@ -218,11 +218,11 @@ class NoteEditActivity : AppCompatActivity() {
     }
 
     private fun saveNote() {
-        note.title = etTitle.text.toString()
-        note.body = etBody.text.toString()
-        note.lastTimeModified = SystemUtils.getCurrentTime()
-        note.tags = NoteHelper.tagStringToList(etTags.text.toString())
-        storage.updateNote(note, object : NoteStorageInterface.Callback {
+        note?.title = etTitle.text.toString()
+        note?.body = etBody.text.toString()
+        note?.lastTimeModified = SystemUtils.getCurrentTime()
+        note?.tags = NoteHelper.tagStringToList(etTags.text.toString())
+        storage.updateNote(note!!, object : NoteStorageInterface.Callback {
             override fun onResult(results: ArrayList<Note>?) {
                 Log.d("ed__", "NoteEditActivity.saveNote(): Note is saved")
             }

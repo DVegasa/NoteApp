@@ -2,13 +2,14 @@ package io.github.dvegasa.todoapp.screens.main
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         initToolbar()
         initFab()
         updateNotes()
+        initSearchComponent()
     }
 
     override fun onResume() {
@@ -105,41 +107,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateNotes() {
-        storage.getAllNotes(object : NoteStorageInterface.Callback {
-            override fun onResult(results: ArrayList<Note>?) {
-                updateRvNotesAdapterList(results!!)
-            }
-        })
+        if (!inSearchMode()) {
+            storage.getAllNotes(object : NoteStorageInterface.Callback {
+                override fun onResult(results: ArrayList<Note>?) {
+                    updateRvNotesAdapterList(results!!)
+                }
+            })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         toolbarMenu = menu
         menuInflater.inflate(R.menu.main_screen_menu, toolbarMenu)
-        val searchItem = toolbarMenu?.findItem(R.id.action_search)
-        val searchView = searchItem?.actionView as SearchView
-        searchView.queryHint = "Поиск"
-        searchView.maxWidth = android.R.attr.width
-
-        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-                Log.d("ed", "expand")
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                Log.d("ed", "Collapse")
-                return true
-            }
-        })
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?) = false
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
-                return false
-            }
-        })
         return true
     }
 
@@ -222,10 +201,22 @@ class MainActivity : AppCompatActivity() {
         rvNotes.addItemDecoration(dividerItemDecoration)
     }
 
+    private fun initSearchComponent() {
+        etSearchField.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter.filter.filter(s.toString())
+            }
+        })
+    }
+
+    private fun inSearchMode(): Boolean = etSearchField.text.isNotEmpty()
+
     private fun setDeletionModeEnabled(b: Boolean) {
         Log.d("ed__", "MainActivity.setDeletionModeEnabled(): $b")
         toolbarMenu?.findItem(R.id.action_delete_notes)?.isVisible = b
-        toolbarMenu?.findItem(R.id.action_search)?.isVisible = !b
         toolbarMenu?.findItem(R.id.action_settings)?.isVisible = !b
         toolbarMenu?.findItem(R.id.action_sort)?.isVisible = !b
     }
