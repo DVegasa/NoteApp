@@ -13,7 +13,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import io.github.dvegasa.todoapp.R
 import io.github.dvegasa.todoapp.data_models.Note
 import io.github.dvegasa.todoapp.screens.attachments.ARG_NOTE_ID
@@ -30,36 +29,32 @@ import org.jetbrains.anko.toast
 
 const val ARG_NOTE_ID = "id"
 
-class NoteEditActivity : AppCompatActivity() {
+class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
 
     private var note: Note? = null
     private val storage: NoteStorageInterface = RoomStorage()
-    private var isTagsShown: Boolean = false
-    private var menu: Menu? = null
-        set(value) {
-            setNoteReadOnlyEnabled(note?.isLocked ?: false, true)
-            field = value
-        }
+
+    private var toolbarMenuManager: ToolbarAndMenuManagerNE? = null
+
+    private var isTagsVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note_edit)
+        toolbarMenuManager = ToolbarAndMenuManagerNE(this).apply {
+            init(toolbar)
+            setAttachmentsNumber(note?.attachments?.size ?: 0)
+            setTagIconEnabled(false)
+        }
 
         val id = intent.extras?.getLong(ARG_NOTE_ID) ?: 0
-        initToolbar()
-        initViews()
         loadNote(id)
+        initViews()
     }
 
     override fun onPause() {
         saveNote()
         super.onPause()
-    }
-
-    private fun initToolbar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = ""
     }
 
     private fun initViews() {
@@ -82,7 +77,13 @@ class NoteEditActivity : AppCompatActivity() {
         storage.getNoteById(id, object : NoteStorageInterface.Callback {
             override fun onResult(results: ArrayList<Note>?) {
                 note = results!![0]
+                Log.d(
+                    "ed__",
+                    "NoteEditActivity.loadNote(): note.isLocked = ${note?.isLocked.toString()}"
+                )
                 showNote()
+                setReadOnlyEnabled(note?.isLocked ?: false, callOnInit = true)
+                toolbarMenuManager?.setLockIconEnabled(note?.isLocked ?: false)
             }
         })
     }
@@ -91,101 +92,29 @@ class NoteEditActivity : AppCompatActivity() {
         etTitle.setText(note?.title)
         etBody.setText(note?.body)
         etTags.setText(note?.tagsToString())
-        // setNoteReadOnlyEnabled(note.isLocked, true)
     }
 
+    @Suppress("UNREACHABLE_CODE")
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.edit_note_screen_menu, menu)
-        this.menu = menu
-        menu?.findItem(R.id.action_tags)?.setOnMenuItemClickListener {
-            isTagsShown = !isTagsShown
-            if (isTagsShown) {
-                menu.findItem(R.id.action_tags).icon =
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_sharp_activated, null)
-            } else {
-                menu.findItem(R.id.action_tags).icon =
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_sharp_normal, null)
-            }
-
-            setTagsEnabled()
-
-            false
-        }
-
-        menu?.findItem(R.id.action_lock)?.setOnMenuItemClickListener {
-            note?.isLocked = !note?.isLocked!!
-            setNoteReadOnlyEnabled(note?.isLocked ?: false, false)
-            false
-        }
-
-        val icon = when (note?.attachments?.size) {
-            0 -> R.drawable.ic_attach_file_toolbar_black_24dp
-            1 -> R.drawable.ic_attachment_number_1
-            2 -> R.drawable.ic_attachment_number_2
-            3 -> R.drawable.ic_attachment_number_3
-            4 -> R.drawable.ic_attachment_number_4
-            5 -> R.drawable.ic_attachment_number_5
-            6 -> R.drawable.ic_attachment_number_6
-            7 -> R.drawable.ic_attachment_number_7
-            8 -> R.drawable.ic_attachment_number_8
-            9 -> R.drawable.ic_attachment_number_9
-            else -> R.drawable.ic_attachment_number_9_plus
-        }
-
-        menu?.findItem(R.id.action_attachments)?.icon =
-            ResourcesCompat.getDrawable(resources, icon, null)
-
-        if (note?.isLocked == true) {
-            menu?.findItem(R.id.action_lock)?.icon =
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_activated, null)
-        } else {
-            menu?.findItem(R.id.action_lock)?.icon =
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_normal, null)
-        }
-        return true
-    }
-
-    private fun setNoteReadOnlyEnabled(isReadOnly: Boolean, calledOnInit: Boolean) {
-        val edits = listOf<EditText>(etTitle, etTags, etBody)
-        Log.d("ed__", "NoteEditActivity.setNoteReadOnlyEnabled: calledOnInit=$calledOnInit")
-        edits.forEach {
-            it.isFocusable = !isReadOnly
-            it.isFocusableInTouchMode = !isReadOnly
-            it.clearFocus()
-        }
-
-        if (isReadOnly) {
-            menu?.findItem(R.id.action_lock)?.icon =
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_activated, null)
-            toast("Только чтение")
-        } else {
-            menu?.findItem(R.id.action_lock)?.icon =
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_lock_normal, null)
-            if (!calledOnInit) toast("Можно редактировать")
-        }
+        return toolbarMenuManager?.onCreateOptionsMenu(menu) ?: true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            android.R.id.home -> {
-                saveNote()
-                finish()
-            }
-            R.id.action_share -> {
-                val text = "${note?.title}\n\n${note?.body}\n\n${note?.tagsToString()}"
-                share(text)
-            }
-            R.id.action_attachments -> {
-                startActivity<AttachmentsActivity>(ARG_NOTE_ID to note?.id)
-            }
-            R.id.action_delete -> {
-                showDeleteDialog()
-            }
-        }
+        toolbarMenuManager?.onOptionsItemSelected(item)
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showDeleteDialog() {
+    override fun saveNote() {
+        writeNoteToDb()
+        finish()
+    }
+
+    override fun shareNote() {
+        val text = "${note?.title}\n\n${note?.body}\n\n${note?.tagsToString()}"
+        share(text)
+    }
+
+    override fun showDeleteDialog() {
         AlertDialog.Builder(this)
             .setTitle("Подтвердите удаление")
             .setMessage(etTitle.text)
@@ -200,13 +129,17 @@ class NoteEditActivity : AppCompatActivity() {
             .setNegativeButton("Отмена") { dialog, which ->
                 dialog.dismiss()
             }.show()
-
     }
 
-    private fun setTagsEnabled() {
-        etTags.visibility = if (isTagsShown) View.VISIBLE else View.GONE
+    override fun showAttachments() {
+        startActivity<AttachmentsActivity>(ARG_NOTE_ID to note?.id)
+    }
 
-        if (isTagsShown) {
+    override fun switchTagsVisibility() {
+        isTagsVisible = !isTagsVisible
+        etTags.visibility = if (isTagsVisible) View.VISIBLE else View.GONE
+
+        if (isTagsVisible) {
             val a = Toast.makeText(
                 this,
                 "Для разделения тегов используйте символ решётки #",
@@ -215,9 +148,32 @@ class NoteEditActivity : AppCompatActivity() {
             a.setGravity(Gravity.TOP, 0, 22)
             a.show()
         }
+        toolbarMenuManager?.setTagIconEnabled(isTagsVisible)
     }
 
-    private fun saveNote() {
+    override fun switchNoteLockedStatus() {
+        note?.isLocked = !note?.isLocked!!
+        setReadOnlyEnabled(note?.isLocked!!, callOnInit = false)
+        toolbarMenuManager?.setLockIconEnabled(note?.isLocked ?: false)
+    }
+
+    private fun setReadOnlyEnabled(b: Boolean, callOnInit: Boolean) {
+        val edits = listOf<EditText>(etTitle, etTags, etBody)
+        Log.d("ed__", "NoteEditActivity.setNoteReadOnlyEnabled: calledOnInit=$callOnInit")
+        edits.forEach {
+            it.isFocusable = !b
+            it.isFocusableInTouchMode = !b
+            it.clearFocus()
+        }
+
+        if (b) {
+            toast("Только чтение")
+        } else {
+            if (!callOnInit) toast("Можно редактировать")
+        }
+    }
+
+    private fun writeNoteToDb() {
         note?.title = etTitle.text.toString()
         note?.body = etBody.text.toString()
         note?.lastTimeModified = SystemUtils.getCurrentTime()
