@@ -81,7 +81,7 @@ class ToolbarAndMenuManagerNE(
     fun onOptionsItemSelected(item: MenuItem?) {
         when (item?.itemId) {
             android.R.id.home -> {
-                callback.saveNote()
+                callback.saveNote(closeActivity = true)
             }
             R.id.action_share -> {
                 callback.shareNote()
@@ -115,7 +115,7 @@ class ToolbarAndMenuManagerNE(
 
     interface Callback {
         fun switchNoteLockedStatus()
-        fun saveNote()
+        fun saveNote(closeActivity: Boolean = false)
         fun shareNote()
         fun showAttachments()
         fun showDeleteDialog()

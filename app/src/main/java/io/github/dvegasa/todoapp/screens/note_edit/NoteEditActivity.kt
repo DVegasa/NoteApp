@@ -104,9 +104,11 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun saveNote() {
+    override fun saveNote(closeActivity: Boolean) {
         writeNoteToDb()
-        finish()
+        if (closeActivity) {
+            finish()
+        }
     }
 
     override fun shareNote() {
