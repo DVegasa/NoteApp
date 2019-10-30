@@ -22,7 +22,11 @@ class NoteHelper {
                 var leftTags = note.tags.size - usedTags
                 a = "$a +$leftTags"
             }
-            return a.trim()
+            a = a.trim()
+            if (a.length == 1) {
+                a = "Без тегов"
+            }
+            return a
         }
 
         fun tagStringToList(tags_: String): ArrayList<String> {

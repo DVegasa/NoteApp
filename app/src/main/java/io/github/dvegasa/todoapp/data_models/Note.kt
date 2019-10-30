@@ -1,5 +1,6 @@
 package io.github.dvegasa.todoapp.data_models
 
+import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
@@ -22,10 +23,15 @@ data class Note(
 ) {
     @Suppress("LocalVariableName")
     fun tagsToString(): String {
+        if (tags.isEmpty()) return ""
         var tags_ = ""
         this.tags.forEachIndexed { index, s ->
             tags_ = "$tags_ #$s"
         }
-        return tags_.trim()
+        tags_ = tags_.trim()
+        Log.d("ed__", "tags_ = $tags_")
+        if (tags_.length == 1)
+            tags_ = ""
+        return tags_
     }
 }
