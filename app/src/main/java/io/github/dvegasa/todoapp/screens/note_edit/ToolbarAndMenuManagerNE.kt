@@ -86,38 +86,17 @@ class ToolbarAndMenuManagerNE(
             R.id.action_share -> {
                 callback.shareNote()
             }
-            R.id.action_attachments -> {
-                callback.showAttachments()
-            }
             R.id.action_delete -> {
                 callback.showDeleteDialog()
             }
         }
     }
 
-    fun setAttachmentsNumber(n: Int) {
-        val icon = when (n) {
-            0 -> R.drawable.ic_attach_file_toolbar_black_24dp
-            1 -> R.drawable.ic_attachment_number_1
-            2 -> R.drawable.ic_attachment_number_2
-            3 -> R.drawable.ic_attachment_number_3
-            4 -> R.drawable.ic_attachment_number_4
-            5 -> R.drawable.ic_attachment_number_5
-            6 -> R.drawable.ic_attachment_number_6
-            7 -> R.drawable.ic_attachment_number_7
-            8 -> R.drawable.ic_attachment_number_8
-            9 -> R.drawable.ic_attachment_number_9
-            else -> R.drawable.ic_attachment_number_9_plus
-        }
-        toolbarMenu?.findItem(R.id.action_attachments)?.icon =
-            ResourcesCompat.getDrawable(hostActivity.resources, icon, null)
-    }
 
     interface Callback {
         fun switchNoteLockedStatus()
         fun saveNote(closeActivity: Boolean = false)
         fun shareNote()
-        fun showAttachments()
         fun showDeleteDialog()
         fun switchTagsVisibility()
     }

@@ -18,8 +18,7 @@ data class Note(
     var body: String = "",
     var tags: List<String> = arrayListOf(),
     var isLocked: Boolean = false,
-    var lastTimeModified: Long = SystemUtils.getCurrentTime(),
-    var attachments: List<String> = arrayListOf()
+    var lastTimeModified: Long = SystemUtils.getCurrentTime()
 ) {
     @Suppress("LocalVariableName")
     fun tagsToString(): String {

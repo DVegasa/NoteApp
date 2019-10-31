@@ -3,12 +3,6 @@
       xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:id="@+id/action_attachments"
-            app:showAsAction="always"
-            android:title="Прикреплённые файлы"
-            android:icon="@drawable/ic_attach_file_toolbar_black_24dp"/>
-
-    <item
             android:id="@+id/action_tags"
             app:showAsAction="always"
             android:title="Хештеги"

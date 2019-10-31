@@ -8,7 +8,7 @@ import io.github.dvegasa.todoapp.data_models.Note
  * 18.10.2019
  */
 
-@Database(entities = [Note::class], version = 2)
+@Database(entities = [Note::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
 }

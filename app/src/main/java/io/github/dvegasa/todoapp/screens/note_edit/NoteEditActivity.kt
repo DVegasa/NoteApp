@@ -15,15 +15,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import io.github.dvegasa.todoapp.R
 import io.github.dvegasa.todoapp.data_models.Note
-import io.github.dvegasa.todoapp.screens.attachments.ARG_NOTE_ID
-import io.github.dvegasa.todoapp.screens.attachments.AttachmentsActivity
 import io.github.dvegasa.todoapp.storage.NoteStorageInterface
 import io.github.dvegasa.todoapp.storage.room_sql.RoomStorage
 import io.github.dvegasa.todoapp.utils.NoteHelper
 import io.github.dvegasa.todoapp.utils.SystemUtils
 import kotlinx.android.synthetic.main.activity_note_edit.*
 import org.jetbrains.anko.share
-import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 
@@ -43,7 +40,6 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
         setContentView(R.layout.activity_note_edit)
         toolbarMenuManager = ToolbarAndMenuManagerNE(this).apply {
             init(toolbar)
-            setAttachmentsNumber(note?.attachments?.size ?: 0)
             setTagIconEnabled(false)
         }
 
@@ -131,10 +127,6 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
             .setNegativeButton("Отмена") { dialog, which ->
                 dialog.dismiss()
             }.show()
-    }
-
-    override fun showAttachments() {
-        startActivity<AttachmentsActivity>(ARG_NOTE_ID to note?.id)
     }
 
     override fun switchTagsVisibility() {

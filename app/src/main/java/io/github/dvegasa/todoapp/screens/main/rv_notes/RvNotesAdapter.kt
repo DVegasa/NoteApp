@@ -95,13 +95,6 @@ class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<R
                 tvHeader.text = note.title + " id #${note.id}"
 
                 tvTags.text = NoteHelper.tagsPreview(note)
-
-                if (note.attachments.isEmpty()) {
-                    llAttachments.visibility = View.INVISIBLE
-                } else {
-                    llAttachments.visibility = View.VISIBLE
-                    tvAttachmentsNumber.text = note.attachments.size.toString()
-                }
             }
         }
 
