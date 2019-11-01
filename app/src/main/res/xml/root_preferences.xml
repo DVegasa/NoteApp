@@ -1,17 +1,27 @@
-
-<androidx.preference.PreferenceScreen
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-            app:title="Отображение заметок">
+    <PreferenceCategory app:title="Отображение заметок">
 
         <ListPreference
-                app:key="previewLimit"
-                app:title="Превью заметки"
-                app:useSimpleSummaryProvider="true"
+                app:defaultValue="limit100"
                 app:entries="@array/settings_symbols_limit_entries"
                 app:entryValues="@array/settings_symbols_limit_values"
-                app:defaultValue="limit100"/>
+                app:key="previewLimit"
+                app:title="Превью заметки"
+                app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Редактирование заметки">
+
+        <ListPreference
+                android:entries="@array/settings_save_every_n_symbols_entries"
+                android:title="Автосохранение каждые"
+                app:defaultValue="saveEvery50"
+                app:entryValues="@array/settings_save_every_n_symbols_values"
+                app:key="autosaveEveryNSymbols"
+                app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 

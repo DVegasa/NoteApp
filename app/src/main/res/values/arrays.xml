@@ -32,4 +32,23 @@
         <item>limit350</item>
         <item>limit450</item>
     </string-array>
+
+
+    <string-array name="settings_save_every_n_symbols_entries">
+        <item>5 символов</item>
+        <item>10 символов</item>
+        <item>20 символов</item>
+        <item>50 символов</item>
+        <item>75 символов</item>
+        <item>100 символов</item>
+    </string-array>
+
+    <string-array name="settings_save_every_n_symbols_values">
+        <item>saveEvery5</item>
+        <item>saveEvery10</item>
+        <item>saveEvery20</item>
+        <item>saveEvery50</item>
+        <item>saveEvery75</item>
+        <item>saveEvery100</item>
+    </string-array>
 </resources>

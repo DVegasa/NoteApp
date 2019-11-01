@@ -17,6 +17,7 @@ import io.github.dvegasa.todoapp.R
 import io.github.dvegasa.todoapp.data_models.Note
 import io.github.dvegasa.todoapp.storage.NoteStorageInterface
 import io.github.dvegasa.todoapp.storage.room_sql.RoomStorage
+import io.github.dvegasa.todoapp.storage.shared_pref.UserPreferences
 import io.github.dvegasa.todoapp.utils.NoteHelper
 import kotlinx.android.synthetic.main.activity_note_edit.*
 import org.jetbrains.anko.share
@@ -24,6 +25,7 @@ import org.jetbrains.anko.toast
 
 
 const val ARG_NOTE_ID = "id"
+const val NOTIFICATION_SAVED = "Заметка сохранена"
 
 class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
 
@@ -66,6 +68,25 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
             }
         })
 
+        val userPref = UserPreferences(this)
+
+        etBody.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s != null && s.isNotBlank()) {
+                    if (s.length % userPref.getAutoSaveEveryNSymbols() == 0) {
+                        saveNote(closeActivity = false)
+                    }
+                }
+            }
+        })
+    }
+
+
+    private fun showNotificaion(key: String) {
+        toolbarMenuManager?.showNotification(key)
     }
 
     private fun loadNote(id: Long) {
@@ -165,15 +186,19 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
         } else {
             writeNoteToDb()
         }
+
         if (closeActivity) {
             finish()
+        } else {
+            toolbarMenuManager?.showNotification(NOTIFICATION_SAVED)
         }
     }
 
     private fun noteisEmpty(): Boolean {
         if (etTitle.text.isBlank()
             && etTags.text.isBlank()
-            && etBody.text.isBlank()) return true
+            && etBody.text.isBlank()
+        ) return true
         return false
     }
 

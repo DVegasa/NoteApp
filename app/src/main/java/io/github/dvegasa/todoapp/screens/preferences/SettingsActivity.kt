@@ -7,6 +7,7 @@ import io.github.dvegasa.todoapp.R
 import kotlinx.android.synthetic.main.settings_activity.*
 
 const val PREF_KEY_PREVIEW_LIMIT = "previewLimit"
+const val PREF_KEY_AUTOSAVE_EVERY_N_SYMBOLS = "autosaveEveryNSymbols"
 
 class SettingsActivity : AppCompatActivity() {
 

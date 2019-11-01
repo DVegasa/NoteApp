@@ -1,6 +1,7 @@
 package io.github.dvegasa.todoapp.screens.note_edit
 
 import android.content.Context
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -92,6 +93,9 @@ class ToolbarAndMenuManagerNE(
         }
     }
 
+    fun showNotification(text: String) {
+        Log.d("ed__", ">> saved!")
+    }
 
     interface Callback {
         fun switchNoteLockedStatus()
