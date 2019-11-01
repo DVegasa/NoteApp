@@ -50,12 +50,12 @@ class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<R
                 it.title
             }
             SORT_NEW_FIRST -> list.sortByDescending {
-                it.lastTimeModified
+                it.createdTime
             }
 
 
             SORT_OLD_FIRST -> list.sortBy {
-                it.lastTimeModified
+                it.createdTime
             }
         }
         notifyDataSetChanged()
@@ -91,8 +91,13 @@ class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<R
                     "${note.body.subSequence(0, limit)}..."
                 }
 
-                tvDate.text = parseTime(note.lastTimeModified)
+                tvDate.text = parseTime(note.createdTime)
                 tvHeader.text = note.title
+                if (note.title.isBlank()) {
+                    tvHeader.visibility = View.GONE
+                } else {
+                    tvHeader.visibility = View.VISIBLE
+                }
 
                 tvTags.text = NoteHelper.tagsPreview(note)
             }

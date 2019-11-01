@@ -182,7 +182,6 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
         if (note == null) return
         note?.title = etTitle.text.toString()
         note?.body = etBody.text.toString()
-        note?.lastTimeModified = SystemUtils.getCurrentTime()
         note?.tags = NoteHelper.tagStringToList(etTags.text.toString())
         storage.updateNote(note!!, object : NoteStorageInterface.Callback {
             override fun onResult(results: ArrayList<Note>?) {
