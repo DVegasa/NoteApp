@@ -81,6 +81,10 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
                 setReadOnlyEnabled(note?.isLocked ?: false, callOnInit = true)
                 toolbarMenuManager?.setLockIconEnabled(note?.isLocked ?: false)
             }
+
+            override fun onFailure(ex: Exception) {
+                finish()
+            }
         })
     }
 
@@ -168,6 +172,7 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
     }
 
     private fun writeNoteToDb() {
+        if (note == null) return
         note?.title = etTitle.text.toString()
         note?.body = etBody.text.toString()
         note?.lastTimeModified = SystemUtils.getCurrentTime()
