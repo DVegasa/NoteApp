@@ -18,7 +18,6 @@ import io.github.dvegasa.todoapp.data_models.Note
 import io.github.dvegasa.todoapp.storage.NoteStorageInterface
 import io.github.dvegasa.todoapp.storage.room_sql.RoomStorage
 import io.github.dvegasa.todoapp.utils.NoteHelper
-import io.github.dvegasa.todoapp.utils.SystemUtils
 import kotlinx.android.synthetic.main.activity_note_edit.*
 import org.jetbrains.anko.share
 import org.jetbrains.anko.toast
@@ -191,6 +190,7 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
     }
 
     private fun deleteNote(isSilent: Boolean) {
+        if (note == null) return
         storage.deleteNote(note!!.id, object : NoteStorageInterface.Callback {
             override fun onResult(results: ArrayList<Note>?) {
                 if (isSilent == false) {

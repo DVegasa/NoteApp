@@ -144,7 +144,7 @@ class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<R
                     it.title.contains(query, true) || it.body.contains(
                         query,
                         true
-                    ) || it.tags.contains(query)
+                    ) || it.tags.toString().contains(query, true)
                 } as ArrayList<Note>
 
                 results.count = filtered.size
