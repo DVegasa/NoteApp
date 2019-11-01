@@ -104,12 +104,6 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun saveNote(closeActivity: Boolean) {
-        writeNoteToDb()
-        if (closeActivity) {
-            finish()
-        }
-    }
 
     override fun shareNote() {
         val text = "${note?.title}\n\n${note?.body}\n\n${note?.tagsToString()}"
@@ -121,12 +115,7 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
             .setTitle("Подтвердите удаление")
             .setMessage(etTitle.text)
             .setPositiveButton("Удалить") { dialog, which ->
-                storage.deleteNote(note!!.id, object : NoteStorageInterface.Callback {
-                    override fun onResult(results: ArrayList<Note>?) {
-                        toast("Заметка удалена")
-                        finish()
-                    }
-                })
+                deleteNote(isSilent = false)
             }
             .setNegativeButton("Отмена") { dialog, which ->
                 dialog.dismiss()
@@ -171,6 +160,24 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
         }
     }
 
+    override fun saveNote(closeActivity: Boolean) {
+        if (noteisEmpty()) {
+            deleteNote(isSilent = true)
+        } else {
+            writeNoteToDb()
+        }
+        if (closeActivity) {
+            finish()
+        }
+    }
+
+    private fun noteisEmpty(): Boolean {
+        if (etTitle.text.isBlank()
+            && etTags.text.isBlank()
+            && etBody.text.isBlank()) return true
+        return false
+    }
+
     private fun writeNoteToDb() {
         if (note == null) return
         note?.title = etTitle.text.toString()
@@ -180,6 +187,17 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
         storage.updateNote(note!!, object : NoteStorageInterface.Callback {
             override fun onResult(results: ArrayList<Note>?) {
                 Log.d("ed__", "NoteEditActivity.saveNote(): Note is saved")
+            }
+        })
+    }
+
+    private fun deleteNote(isSilent: Boolean) {
+        storage.deleteNote(note!!.id, object : NoteStorageInterface.Callback {
+            override fun onResult(results: ArrayList<Note>?) {
+                if (isSilent == false) {
+                    toast("Заметка удалена")
+                }
+                finish()
             }
         })
     }

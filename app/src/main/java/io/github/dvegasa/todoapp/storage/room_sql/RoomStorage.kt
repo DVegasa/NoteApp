@@ -30,11 +30,7 @@ class RoomStorage() : NoteStorageInterface {
             Log.d("ed__", "RoomStorage.createNote(): get request for adding")
 
             // Создаём новую заметку и получаем её id
-            val id = dao.insertNote(Note().apply {
-                title = (1000..9999).random().toString()
-            })
-            Log.d("ed__", "RoomStorage.createNote(): id received = $id")
-            Log.d("ed__", "RoomStorage.createNote(): requesting for object Note...")
+            val id = dao.insertNote(Note())
 
             // Получаем объект этой заметки
             getNoteById(id, object : NoteStorageInterface.Callback {

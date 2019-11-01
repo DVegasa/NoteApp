@@ -92,7 +92,7 @@ class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<R
                 }
 
                 tvDate.text = parseTime(note.lastTimeModified)
-                tvHeader.text = note.title + " id #${note.id}"
+                tvHeader.text = note.title
 
                 tvTags.text = NoteHelper.tagsPreview(note)
             }
