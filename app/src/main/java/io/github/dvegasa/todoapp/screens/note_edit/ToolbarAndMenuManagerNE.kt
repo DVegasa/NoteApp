@@ -1,15 +1,17 @@
 package io.github.dvegasa.todoapp.screens.note_edit
 
 import android.content.Context
+import android.os.Handler
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import io.github.dvegasa.todoapp.R
+import kotlinx.android.synthetic.main.activity_note_edit.*
 
 /**
  * 23.10.2019
@@ -21,6 +23,7 @@ class ToolbarAndMenuManagerNE(
     private val callback = context as Callback
     private var toolbarMenu: Menu? = null
     private var lockIcon = R.drawable.ic_lock_normal
+    private val tvNotification = (context as NoteEditActivity).tvNotification
 
     fun init(toolbar: Toolbar) {
         hostActivity.setSupportActionBar(toolbar)
@@ -103,7 +106,21 @@ class ToolbarAndMenuManagerNE(
     }
 
     fun showNotification(text: String) {
-        Log.d("ed__", ">> saved!")
+        tvNotification.apply {
+            setText(text)
+            visibility = View.VISIBLE
+        }
+
+        val h = Handler()
+
+        Thread(Runnable {
+            Thread.sleep(1000)
+            h.post {
+                tvNotification.apply {
+                    visibility = View.INVISIBLE
+                }
+            }
+        }).start()
     }
 
     interface Callback {

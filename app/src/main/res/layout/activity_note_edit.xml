@@ -18,7 +18,17 @@
 
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
-                style="@style/WhiteToolbar"/>
+                style="@style/WhiteToolbar">
+
+            <TextView
+                    android:id="@+id/tvNotification"
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Сохранено!"
+                    android:gravity="left"/>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <View
                 android:layout_width="match_parent"

@@ -25,7 +25,7 @@ import org.jetbrains.anko.toast
 
 
 const val ARG_NOTE_ID = "id"
-const val NOTIFICATION_SAVED = "Заметка сохранена"
+const val NOTIFICATION_SAVED = "Сохранено!"
 
 class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
 
@@ -70,6 +70,7 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
         })
 
         val userPref = UserPreferences(this)
+        var deltaCounter = 0
 
         etBody.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -77,8 +78,10 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s != null && s.isNotBlank()) {
-                    if (s.length % userPref.getAutoSaveEveryNSymbols() == 0) {
+                    deltaCounter++
+                    if (deltaCounter == userPref.getAutoSaveEveryNSymbols()) {
                         saveNote(closeActivity = false)
+                        deltaCounter = 0
                     }
                 }
             }
