@@ -1,6 +1,8 @@
 package io.github.dvegasa.todoapp.screens.note_edit
 
 import android.content.Context
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -58,6 +60,13 @@ class ToolbarAndMenuManagerNE(
             callback.switchNoteLockedStatus()
             false
         }
+
+        val text = "Удалить"
+        menu?.findItem(R.id.action_delete)?.setTitle(
+            SpannableString(text).apply {
+                setSpan(ForegroundColorSpan(0xFFEA0000.toInt()), 0, text.length, 0)
+            }
+        )
         return true
     }
 

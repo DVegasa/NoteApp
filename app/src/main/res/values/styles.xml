@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme"
@@ -37,7 +37,7 @@
 
 
 
-    <style name="Toolbar">
+    <style name="Toolbar" >
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
@@ -49,15 +49,16 @@
     </style>
 
 
-    <style name="WhiteToolbar">
+    <style name="WhiteToolbar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="android:background">@color/colorWhite</item>
         <item name="colorPrimary">@color/colorBackground</item>
-        <item name="colorPrimaryDark">#E4E4E4</item>
+        <item name="colorPrimaryDark">#FFE4E4E4</item>
+        <item name="android:windowLightStatusBar"
+                tools:targetApi="m">true</item>
     </style>
-
 
     <style name="SplashScreen"
            parent="Theme.AppCompat.NoActionBar">

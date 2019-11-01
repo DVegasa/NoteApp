@@ -38,6 +38,7 @@ class NoteEditActivity : AppCompatActivity(), ToolbarAndMenuManagerNE.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.WhiteToolbar)
         setContentView(R.layout.activity_note_edit)
         toolbarMenuManager = ToolbarAndMenuManagerNE(this).apply {
             init(toolbar)
