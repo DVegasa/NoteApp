@@ -63,13 +63,15 @@ class RvNotesManager(
     }
 
     fun updateData() {
-        if (!activityHost.isInSearchMode()) {
-            storage.getAllNotes(object : NoteStorageInterface.Callback {
-                override fun onResult(results: ArrayList<Note>?) {
-                    adapter.updateList(results!!)
+        storage.getAllNotes(object : NoteStorageInterface.Callback {
+            override fun onResult(results: ArrayList<Note>?) {
+                adapter.updateList(results!!)
+                if (activityHost.isInSearchMode()) {
+                    adapter.updateLastSearch()
                 }
-            })
-        }
+            }
+        })
+
     }
 
     fun handleSearchEvent(q: String) {

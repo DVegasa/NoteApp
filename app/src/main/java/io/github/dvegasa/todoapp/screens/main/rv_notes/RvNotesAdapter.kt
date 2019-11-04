@@ -32,7 +32,7 @@ const val SORT_OLD_FIRST = 1002
 class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<RvNotesAdapter.VH>(),
     Filterable {
 
-    var customFilter = CustomFilter(this, list.clone() as ArrayList<Note>)
+    var customFilter = CustomFilter(this)
 
     var tracker: SelectionTracker<Long>? = null
 
@@ -63,7 +63,12 @@ class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<R
 
     fun updateList(l: ArrayList<Note>) {
         this.list = l
-        customFilter = CustomFilter(this, l.clone() as ArrayList<Note>)
+        customFilter = CustomFilter(this)
+        notifyDataSetChanged()
+    }
+
+    fun updateLastSearch() {
+        this.list = customFilter.updateLastSearch()
         notifyDataSetChanged()
     }
 
@@ -134,9 +139,23 @@ class RvNotesAdapter(private var list: ArrayList<Note>) : RecyclerView.Adapter<R
 
     override fun getFilter() = customFilter
 
-    class CustomFilter(val adapter: RvNotesAdapter, val filterList: ArrayList<Note>) : Filter() {
+    inner class CustomFilter(val adapter: RvNotesAdapter) : Filter() {
+
+        var filterList: ArrayList<Note> = list
+        var lastSearch: String = ""
+
+        @Suppress("UNCHECKED_CAST")
+        fun updateLastSearch(): ArrayList<Note> {
+            return performFiltering(lastSearch).values as ArrayList<Note>
+        }
 
         override fun performFiltering(query: CharSequence?): FilterResults {
+            if (query == null) {
+                lastSearch = ""
+            } else {
+                lastSearch = query.toString()
+            }
+
             val results = FilterResults()
             if (query != null && query.isNotEmpty()) {
 
